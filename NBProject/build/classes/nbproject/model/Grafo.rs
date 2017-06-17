@@ -1,0 +1,6 @@
+graphservice.model.Grafo$GrafoTupleScheme
+graphservice.model.Grafo$GrafoStandardScheme
+graphservice.model.Grafo$GrafoStandardSchemeFactory
+graphservice.model.Grafo$_Fields
+graphservice.model.Grafo$GrafoTupleSchemeFactory
+graphservice.model.Grafo

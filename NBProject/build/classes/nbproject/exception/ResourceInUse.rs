@@ -1,0 +1,6 @@
+graphservice.exception.ResourceInUse$ResourceInUseTupleSchemeFactory
+graphservice.exception.ResourceInUse
+graphservice.exception.ResourceInUse$_Fields
+graphservice.exception.ResourceInUse$ResourceInUseStandardSchemeFactory
+graphservice.exception.ResourceInUse$ResourceInUseTupleScheme
+graphservice.exception.ResourceInUse$ResourceInUseStandardScheme

@@ -1,0 +1,6 @@
+graphservice.model.Aresta$_Fields
+graphservice.model.Aresta$ArestaStandardScheme
+graphservice.model.Aresta$ArestaTupleSchemeFactory
+graphservice.model.Aresta
+graphservice.model.Aresta$ArestaStandardSchemeFactory
+graphservice.model.Aresta$ArestaTupleScheme
