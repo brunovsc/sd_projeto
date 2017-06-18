@@ -71,7 +71,12 @@ service Graph {
 	list<Vertice> listNeighbors(1:i32 nome) throws (1:KeyNotFound knf, 2:ResourceInUse riu),
 
         list<Vertice> listVertices(),
-        list<Aresta> listArestas()
+        list<Aresta> listArestas(),
+
+        list<Vertice> listSelfVertices(),
+        list<Aresta> listSelfArestas(),
+
+        list<Vertice> menorCaminho(1:i32 vertice1, 2:i32 vertice2)
 }
 
 

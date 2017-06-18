@@ -14,6 +14,7 @@ import org.apache.thrift.transport.TServerTransport;
 import org.apache.thrift.server.TServer.Args;
 import org.apache.thrift.server.TSimpleServer;
 import org.apache.thrift.server.TThreadPoolServer;
+import org.apache.thrift.transport.TTransportException;
 
 /**
  *
@@ -55,13 +56,13 @@ public class GraphServer {
 
             System.out.println("Starting the simple server on port " + args[1]);
             new Thread(new Runnable() {
+                @Override
                 public void run() {
                    server.serve();
                 }
             }).start();
-            return;
-        } catch (Exception x){
-            x.printStackTrace();
+        } catch (NumberFormatException | TTransportException x){
+            System.out.println(x);
         }
     }
 }

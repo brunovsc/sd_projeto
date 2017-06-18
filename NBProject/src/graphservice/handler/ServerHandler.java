@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package graphservice.handler;
 
 import graphservice.exception.KeyNotFound;
@@ -19,11 +14,8 @@ import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
+import org.apache.thrift.transport.TTransportException;
 
-/**
- *
- * @author sd-server
- */
 public class ServerHandler implements Graph.Iface{
     
     private final Grafo grafo = new Grafo();
@@ -33,9 +25,9 @@ public class ServerHandler implements Graph.Iface{
     private static final boolean testConcurrency = false; // test of concurrency
     
     // Multiple servers
-    private static TTransport []transports;
-    private static TProtocol []protocols;
-    private static Graph.Client []clients;
+    private TTransport []transports;
+    private TProtocol []protocols;
+    private Graph.Client []clients;
     private static int ports[]; // array of ports for others servers
     private int selfPort; // number of the port of this server
     private static int N; // number of servers
@@ -67,7 +59,7 @@ public class ServerHandler implements Graph.Iface{
         for(int i = 0; i < N; i++){
             if(ports[i] != selfPort){
                 try{
-                    transports[i] =  new TSocket("localhost", ports[i]);
+                    transports[i] = new TSocket("localhost", ports[i]);
                     transports[i].open();
                     protocols[i] = new TBinaryProtocol(transports[i]);
                     clients[i] = new Graph.Client(protocols[i]);
@@ -231,7 +223,7 @@ public class ServerHandler implements Graph.Iface{
         System.out.println("Request forwarded from server " + selfPort + " to server " + ports[server]);
     }
     
-    public Vertice findVertice(int vertice){
+    public Vertice findVertice(Grafo grafo, int vertice){
         for(Vertice v: grafo.vertices){
             if(v.nome == vertice){
                 return v;
@@ -240,7 +232,7 @@ public class ServerHandler implements Graph.Iface{
         return null;
     }
     
-    public Aresta findAresta(int vertice1, int vertice2){
+    public Aresta findAresta(Grafo grafo, int vertice1, int vertice2){
         for(Aresta a: grafo.arestas){
             if((a.vertice1 == vertice1 && a.vertice2 == vertice2) || (a.vertice1 == vertice2 && a.vertice2 == vertice1)){
                return a;
@@ -254,14 +246,19 @@ public class ServerHandler implements Graph.Iface{
         int server = processRequest(nome);
         if(server != selfId){
             logForwardedRequest(server);
-            boolean p = clients[server].createVertice(nome, cor, peso, descricao);
-            return p;
+            try{
+                boolean p = clients[server].createVertice(nome, cor, peso, descricao);
+                return p;
+            } catch(Exception e){
+                System.out.println(e.getCause());
+                throw e;
+            }
         }
         verifyResourceVertice(nome);
         
         logForOperation(1);
         
-        if(findVertice(nome) != null){ // Restriction: restrição de criação apenas se vértice já não existe
+        if(findVertice(grafo, nome) != null){ // Restriction: restrição de criação apenas se vértice já não existe
             unblockVertice(nome);
             throw new KeyAlreadyUsed(nome, "Vertice ja existente");            
         }
@@ -284,7 +281,7 @@ public class ServerHandler implements Graph.Iface{
         
         logForOperation(2);
         
-        Vertice vertice = findVertice(key);
+        Vertice vertice = findVertice(grafo, key);
         if(vertice == null){
             unblockVertice(key);
             throw new KeyNotFound(key, "Vertice nao encontrado");
@@ -310,8 +307,8 @@ public class ServerHandler implements Graph.Iface{
         }
         verifyResourceVertice(key);
         
-        logForOperation(3);
-        Vertice vertice = findVertice(key);
+        logForOperation(4);
+        Vertice vertice = findVertice(grafo, key);
         if(vertice == null){
             unblockVertice(key);
             throw new KeyNotFound(key, "Vertice nao encontrado");  
@@ -331,8 +328,8 @@ public class ServerHandler implements Graph.Iface{
         }
         verifyResourceVertice(nome); 
         
-        logForOperation(4);
-        Vertice vertice = findVertice(nome);
+        logForOperation(3);
+        Vertice vertice = findVertice(grafo, nome);
         if(vertice == null){
             unblockVertice(nome);
             throw new KeyNotFound(nome, "Vertice nao encontrado");
@@ -357,16 +354,16 @@ public class ServerHandler implements Graph.Iface{
         
         logForOperation(5);
         // Restriction: restrição de criar aresta se ambos os vértices já existirem no grafo
-        if(findVertice(vertice1) == null){
+        if(findVertice(grafo, vertice1) == null){
             unblockAresta(vertice1, vertice2);
             throw new KeyNotFound(vertice1, "Vertice nao encontrado");
         }
-        if(findVertice(vertice2) == null){ 
+        if(findVertice(grafo, vertice2) == null){ 
             unblockAresta(vertice1, vertice2);
             throw new KeyNotFound(vertice2, "Vertice nao encontrado");
         }
         
-        Aresta aresta = findAresta(vertice1, vertice2);
+        Aresta aresta = findAresta(grafo, vertice1, vertice2);
         
         if(aresta == null){
             grafo.arestas.add(new Aresta(vertice1, vertice2, peso, direcionado, descricao));
@@ -402,7 +399,7 @@ public class ServerHandler implements Graph.Iface{
         verifyResourceAresta(vertice1, vertice2);        
         
         logForOperation(6);
-        Aresta aresta = findAresta(vertice1, vertice2);
+        Aresta aresta = findAresta(grafo, vertice1, vertice2);
         if(aresta == null){
             unblockAresta(vertice1, vertice2);
             throw new KeyNotFound(0, "Aresta nao encontrada");
@@ -422,8 +419,8 @@ public class ServerHandler implements Graph.Iface{
         }
         verifyResourceAresta(vertice1, vertice2);
         
-        logForOperation(7);
-        Aresta aresta = findAresta(vertice1, vertice2);
+        logForOperation(8);
+        Aresta aresta = findAresta(grafo, vertice1, vertice2);
         if(aresta == null){
             unblockAresta(vertice1, vertice2);
             throw new KeyNotFound(0, "Aresta nao encontrada");            
@@ -442,8 +439,8 @@ public class ServerHandler implements Graph.Iface{
         }
         verifyResourceAresta(vertice1, vertice2);
         
-        logForOperation(8);
-        Aresta aresta = findAresta(vertice1, vertice2);
+        logForOperation(7);
+        Aresta aresta = findAresta(grafo, vertice1, vertice2);
         if(aresta == null){
             unblockAresta(vertice1, vertice2);
             throw new KeyNotFound(0, "Aresta nao encontrada");  
@@ -454,23 +451,24 @@ public class ServerHandler implements Graph.Iface{
         aresta.descricao = descricao;
         return true;        
     }
-
+    
     @Override
     public List<Vertice> listVerticesFromAresta(int vertice1, int vertice2) throws KeyNotFound, ResourceInUse, TException {
+        Grafo fullGraph = getFullGraph();
         verifyResourceAresta(vertice1, vertice2);
         
         logForOperation(9);
-        Aresta aresta = findAresta(vertice1, vertice2);
+        Aresta aresta = findAresta(fullGraph, vertice1, vertice2);
         if(aresta == null){
             unblockAresta(vertice1, vertice2);
             throw new KeyNotFound(0, "Aresta nao encontrada");
         }
-        Vertice v1 = findVertice(vertice1);
+        Vertice v1 = findVertice(fullGraph, vertice1);
         if(v1 == null){
             unblockAresta(vertice1, vertice2);
             throw new KeyNotFound(vertice1, "Vertice nao encontrado");            
         }
-        Vertice v2 = findVertice(vertice2);
+        Vertice v2 = findVertice(fullGraph, vertice2);
         if(v2 == null){
             unblockAresta(vertice1, vertice2);
             throw new KeyNotFound(vertice2, "Vertice nao encontrado");            
@@ -485,10 +483,11 @@ public class ServerHandler implements Graph.Iface{
 
     @Override
     public List<Aresta> listArestasFromVertice(int nome) throws KeyNotFound, ResourceInUse, TException {
+        Grafo fullGraph = getFullGraph();
         verifyResourceVertice(nome);
         
         logForOperation(10);
-        Vertice v = findVertice(nome);
+        Vertice v = findVertice(fullGraph, nome);
         if(v == null){
             unblockVertice(nome);
             throw new KeyNotFound(nome, "Vertice nao encontrado");
@@ -505,10 +504,11 @@ public class ServerHandler implements Graph.Iface{
 
     @Override
     public List<Vertice> listNeighbors(int nome) throws KeyNotFound, ResourceInUse, TException {
+        Grafo fullGraph = getFullGraph();
         verifyResourceVertice(nome);
         
         logForOperation(11);
-        Vertice v = findVertice(nome);
+        Vertice v = findVertice(fullGraph, nome);
         if(v == null){
             unblockVertice(nome);
             throw new KeyNotFound(nome, "Vertice nao encontrado");
@@ -537,11 +537,32 @@ public class ServerHandler implements Graph.Iface{
 
     @Override
     public List<Vertice> listVertices(){
+
+        return null;
+    }
+    
+    //@Override
+    public List<Vertice> listSelfVertices(){
         logForOperation(12);
         if(grafo.isSetVertices()){
             return grafo.vertices;
         }
         return null;
+    }
+    
+    public Grafo getFullGraph(){
+        Grafo g = new Grafo();
+        g.vertices = grafo.vertices;
+        g.arestas = grafo.arestas;
+        for(int i = 0; i < N; i++){
+            if(i != selfId){                
+                try{
+                    g.vertices.addAll(clients[i].listVertices());
+                    g.arestas.addAll(clients[i].listArestas());
+                } catch(Exception e){}
+            }
+        }
+        return g;
     }
     
     @Override
