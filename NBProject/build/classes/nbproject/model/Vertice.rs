@@ -1,6 +1,0 @@
-graphservice.model.Vertice$_Fields
-graphservice.model.Vertice$VerticeStandardSchemeFactory
-graphservice.model.Vertice$VerticeStandardScheme
-graphservice.model.Vertice$VerticeTupleScheme
-graphservice.model.Vertice$VerticeTupleSchemeFactory
-graphservice.model.Vertice
