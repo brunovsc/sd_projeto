@@ -552,4 +552,32 @@ public class ServerHandler implements Graph.Iface{
         }
         return null;
     }
+    
+    
+    
+    
+    //ALOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO//
+    
+    //FUNÇÃAOOOOOOOOO DIJKTRA//
+    /*
+    public List<vertice> menorCaminho(int vertice1, int vertice2) {
+		
+        Dijkstra algoritmo = new Dijkstra(grafo);
+
+        vertice v = procuraVertice(vertice1);
+        vertice destino = procuraVertice(vertice2);
+
+        algoritmo.executa(v);
+
+        LinkedList<vertice> caminho = algoritmo.getCaminho(destino);
+
+        for(vertice vertice: caminho) {
+
+                System.out.println(vertice.getNome());
+
+        }
+
+        return caminho;
+		
+    }*/
 }
