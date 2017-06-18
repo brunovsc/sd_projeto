@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static java.lang.Thread.sleep;
+import java.util.LinkedList;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TSocket;
@@ -550,6 +551,41 @@ public class ServerHandler implements Graph.Iface{
         return null;
     }
     
+    @Override
+    public List<Aresta> listArestas(){
+        logForOperation(13);
+        if(grafo.isSetArestas()){
+            return grafo.arestas;
+        }
+        return null;
+    }
+
+    @Override
+    public List<Aresta> listSelfArestas() throws TException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Vertice> menorCaminho(int vertice1, int vertice2) throws TException {
+        Grafo fullGraph = getFullGraph();
+        
+        Vertice v = findVertice(fullGraph, vertice1);
+        Vertice destino = findVertice(fullGraph, vertice2);
+
+        Dijkstra algoritmo = new Dijkstra(fullGraph);
+
+        algoritmo.executa(v);
+
+        LinkedList<Vertice> caminho = algoritmo.getCaminho(destino);
+        /*
+        for(Vertice vertice: caminho) {
+
+                System.out.println(vertice.getNome());
+
+        }*/
+        return caminho;
+    }
+    
     public Grafo getFullGraph(){
         Grafo g = new Grafo();
         g.vertices = grafo.vertices;
@@ -564,41 +600,4 @@ public class ServerHandler implements Graph.Iface{
         }
         return g;
     }
-    
-    @Override
-    public List<Aresta> listArestas(){
-        logForOperation(13);
-        if(grafo.isSetArestas()){
-            return grafo.arestas;
-        }
-        return null;
-    }
-    
-    
-    
-    
-    //ALOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO//
-    
-    //FUNÇÃAOOOOOOOOO DIJKTRA//
-    /*
-    public List<vertice> menorCaminho(int vertice1, int vertice2) {
-		
-        Dijkstra algoritmo = new Dijkstra(grafo);
-
-        vertice v = procuraVertice(vertice1);
-        vertice destino = procuraVertice(vertice2);
-
-        algoritmo.executa(v);
-
-        LinkedList<vertice> caminho = algoritmo.getCaminho(destino);
-
-        for(vertice vertice: caminho) {
-
-                System.out.println(vertice.getNome());
-
-        }
-
-        return caminho;
-		
-    }*/
 }

@@ -6,11 +6,8 @@
  */
 package graphservice.handler;
 
-import graphservice.exception.KeyNotFound;
-import graphservice.exception.ResourceInUse;
-import graphservice.exception.KeyAlreadyUsed;
-import graphservice.model.Aresta;
-import graphservice.model.Vertice;
+import graphservice.model.*;
+import graphservice.exception.*;
 import org.apache.thrift.scheme.IScheme;
 import org.apache.thrift.scheme.SchemeFactory;
 import org.apache.thrift.scheme.StandardScheme;
@@ -67,6 +64,12 @@ public class Graph {
 
     public List<Aresta> listArestas() throws org.apache.thrift.TException;
 
+    public List<Vertice> listSelfVertices() throws org.apache.thrift.TException;
+
+    public List<Aresta> listSelfArestas() throws org.apache.thrift.TException;
+
+    public List<Vertice> menorCaminho(int vertice1, int vertice2) throws org.apache.thrift.TException;
+
   }
 
   public interface AsyncIface {
@@ -96,6 +99,12 @@ public class Graph {
     public void listVertices(org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
 
     public void listArestas(org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
+
+    public void listSelfVertices(org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
+
+    public void listSelfArestas(org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
+
+    public void menorCaminho(int vertice1, int vertice2, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -499,8 +508,77 @@ public class Graph {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "listArestas failed: unknown result");
     }
 
+    public List<Vertice> listSelfVertices() throws org.apache.thrift.TException
+    {
+      send_listSelfVertices();
+      return recv_listSelfVertices();
+    }
+
+    public void send_listSelfVertices() throws org.apache.thrift.TException
+    {
+      listSelfVertices_args args = new listSelfVertices_args();
+      sendBase("listSelfVertices", args);
+    }
+
+    public List<Vertice> recv_listSelfVertices() throws org.apache.thrift.TException
+    {
+      listSelfVertices_result result = new listSelfVertices_result();
+      receiveBase(result, "listSelfVertices");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "listSelfVertices failed: unknown result");
+    }
+
+    public List<Aresta> listSelfArestas() throws org.apache.thrift.TException
+    {
+      send_listSelfArestas();
+      return recv_listSelfArestas();
+    }
+
+    public void send_listSelfArestas() throws org.apache.thrift.TException
+    {
+      listSelfArestas_args args = new listSelfArestas_args();
+      sendBase("listSelfArestas", args);
+    }
+
+    public List<Aresta> recv_listSelfArestas() throws org.apache.thrift.TException
+    {
+      listSelfArestas_result result = new listSelfArestas_result();
+      receiveBase(result, "listSelfArestas");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "listSelfArestas failed: unknown result");
+    }
+
+    public List<Vertice> menorCaminho(int vertice1, int vertice2) throws org.apache.thrift.TException
+    {
+      send_menorCaminho(vertice1, vertice2);
+      return recv_menorCaminho();
+    }
+
+    public void send_menorCaminho(int vertice1, int vertice2) throws org.apache.thrift.TException
+    {
+      menorCaminho_args args = new menorCaminho_args();
+      args.setVertice1(vertice1);
+      args.setVertice2(vertice2);
+      sendBase("menorCaminho", args);
+    }
+
+    public List<Vertice> recv_menorCaminho() throws org.apache.thrift.TException
+    {
+      menorCaminho_result result = new menorCaminho_result();
+      receiveBase(result, "menorCaminho");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "menorCaminho failed: unknown result");
+    }
+
   }
- /*
+  
+  /*
   public static class AsyncClient extends org.apache.thrift.async.TAsyncClient implements AsyncIface {
     public static class Factory implements org.apache.thrift.async.TAsyncClientFactory<AsyncClient> {
       private org.apache.thrift.async.TAsyncClientManager clientManager;
@@ -979,6 +1057,99 @@ public class Graph {
       }
     }
 
+    public void listSelfVertices(org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      listSelfVertices_call method_call = new listSelfVertices_call(resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class listSelfVertices_call extends org.apache.thrift.async.TAsyncMethodCall {
+      public listSelfVertices_call(org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("listSelfVertices", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        listSelfVertices_args args = new listSelfVertices_args();
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public List<Vertice> getResult() throws org.apache.thrift.TException {
+        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_listSelfVertices();
+      }
+    }
+
+    public void listSelfArestas(org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      listSelfArestas_call method_call = new listSelfArestas_call(resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class listSelfArestas_call extends org.apache.thrift.async.TAsyncMethodCall {
+      public listSelfArestas_call(org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("listSelfArestas", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        listSelfArestas_args args = new listSelfArestas_args();
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public List<Aresta> getResult() throws org.apache.thrift.TException {
+        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_listSelfArestas();
+      }
+    }
+
+    public void menorCaminho(int vertice1, int vertice2, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      menorCaminho_call method_call = new menorCaminho_call(vertice1, vertice2, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class menorCaminho_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private int vertice1;
+      private int vertice2;
+      public menorCaminho_call(int vertice1, int vertice2, org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.vertice1 = vertice1;
+        this.vertice2 = vertice2;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("menorCaminho", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        menorCaminho_args args = new menorCaminho_args();
+        args.setVertice1(vertice1);
+        args.setVertice2(vertice2);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public List<Vertice> getResult() throws org.apache.thrift.TException {
+        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_menorCaminho();
+      }
+    }
+
   }
 */
   public static class Processor<I extends Iface> extends org.apache.thrift.TBaseProcessor<I> implements org.apache.thrift.TProcessor {
@@ -1005,6 +1176,9 @@ public class Graph {
       processMap.put("listNeighbors", new listNeighbors());
       processMap.put("listVertices", new listVertices());
       processMap.put("listArestas", new listArestas());
+      processMap.put("listSelfVertices", new listSelfVertices());
+      processMap.put("listSelfArestas", new listSelfArestas());
+      processMap.put("menorCaminho", new menorCaminho());
       return processMap;
     }
 
@@ -1340,6 +1514,66 @@ public class Graph {
       }
     }
 
+    public static class listSelfVertices<I extends Iface> extends org.apache.thrift.ProcessFunction<I, listSelfVertices_args> {
+      public listSelfVertices() {
+        super("listSelfVertices");
+      }
+
+      public listSelfVertices_args getEmptyArgsInstance() {
+        return new listSelfVertices_args();
+      }
+
+      protected boolean isOneway() {
+        return false;
+      }
+
+      public listSelfVertices_result getResult(I iface, listSelfVertices_args args) throws org.apache.thrift.TException {
+        listSelfVertices_result result = new listSelfVertices_result();
+        result.success = iface.listSelfVertices();
+        return result;
+      }
+    }
+
+    public static class listSelfArestas<I extends Iface> extends org.apache.thrift.ProcessFunction<I, listSelfArestas_args> {
+      public listSelfArestas() {
+        super("listSelfArestas");
+      }
+
+      public listSelfArestas_args getEmptyArgsInstance() {
+        return new listSelfArestas_args();
+      }
+
+      protected boolean isOneway() {
+        return false;
+      }
+
+      public listSelfArestas_result getResult(I iface, listSelfArestas_args args) throws org.apache.thrift.TException {
+        listSelfArestas_result result = new listSelfArestas_result();
+        result.success = iface.listSelfArestas();
+        return result;
+      }
+    }
+
+    public static class menorCaminho<I extends Iface> extends org.apache.thrift.ProcessFunction<I, menorCaminho_args> {
+      public menorCaminho() {
+        super("menorCaminho");
+      }
+
+      public menorCaminho_args getEmptyArgsInstance() {
+        return new menorCaminho_args();
+      }
+
+      protected boolean isOneway() {
+        return false;
+      }
+
+      public menorCaminho_result getResult(I iface, menorCaminho_args args) throws org.apache.thrift.TException {
+        menorCaminho_result result = new menorCaminho_result();
+        result.success = iface.menorCaminho(args.vertice1, args.vertice2);
+        return result;
+      }
+    }
+
   }
 
   public static class AsyncProcessor<I extends AsyncIface> extends org.apache.thrift.TBaseAsyncProcessor<I> {
@@ -1366,6 +1600,9 @@ public class Graph {
       processMap.put("listNeighbors", new listNeighbors());
       processMap.put("listVertices", new listVertices());
       processMap.put("listArestas", new listArestas());
+      processMap.put("listSelfVertices", new listSelfVertices());
+      processMap.put("listSelfArestas", new listSelfArestas());
+      processMap.put("menorCaminho", new menorCaminho());
       return processMap;
     }
 
@@ -2156,6 +2393,159 @@ public class Graph {
 
       public void start(I iface, listArestas_args args, org.apache.thrift.async.AsyncMethodCallback<List<Aresta>> resultHandler) throws TException {
         iface.listArestas(resultHandler);
+      }
+    }
+
+    public static class listSelfVertices<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, listSelfVertices_args, List<Vertice>> {
+      public listSelfVertices() {
+        super("listSelfVertices");
+      }
+
+      public listSelfVertices_args getEmptyArgsInstance() {
+        return new listSelfVertices_args();
+      }
+
+      public AsyncMethodCallback<List<Vertice>> getResultHandler(final AsyncFrameBuffer fb, final int seqid) {
+        final org.apache.thrift.AsyncProcessFunction fcall = this;
+        return new AsyncMethodCallback<List<Vertice>>() { 
+          public void onComplete(List<Vertice> o) {
+            listSelfVertices_result result = new listSelfVertices_result();
+            result.success = o;
+            try {
+              fcall.sendResponse(fb,result, org.apache.thrift.protocol.TMessageType.REPLY,seqid);
+              return;
+            } catch (Exception e) {
+              LOGGER.error("Exception writing to internal frame buffer", e);
+            }
+            fb.close();
+          }
+          public void onError(Exception e) {
+            byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
+            org.apache.thrift.TBase msg;
+            listSelfVertices_result result = new listSelfVertices_result();
+            {
+              msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
+              msg = (org.apache.thrift.TBase)new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, e.getMessage());
+            }
+            try {
+              fcall.sendResponse(fb,msg,msgType,seqid);
+              return;
+            } catch (Exception ex) {
+              LOGGER.error("Exception writing to internal frame buffer", ex);
+            }
+            fb.close();
+          }
+        };
+      }
+
+      protected boolean isOneway() {
+        return false;
+      }
+
+      public void start(I iface, listSelfVertices_args args, org.apache.thrift.async.AsyncMethodCallback<List<Vertice>> resultHandler) throws TException {
+        iface.listSelfVertices(resultHandler);
+      }
+    }
+
+    public static class listSelfArestas<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, listSelfArestas_args, List<Aresta>> {
+      public listSelfArestas() {
+        super("listSelfArestas");
+      }
+
+      public listSelfArestas_args getEmptyArgsInstance() {
+        return new listSelfArestas_args();
+      }
+
+      public AsyncMethodCallback<List<Aresta>> getResultHandler(final AsyncFrameBuffer fb, final int seqid) {
+        final org.apache.thrift.AsyncProcessFunction fcall = this;
+        return new AsyncMethodCallback<List<Aresta>>() { 
+          public void onComplete(List<Aresta> o) {
+            listSelfArestas_result result = new listSelfArestas_result();
+            result.success = o;
+            try {
+              fcall.sendResponse(fb,result, org.apache.thrift.protocol.TMessageType.REPLY,seqid);
+              return;
+            } catch (Exception e) {
+              LOGGER.error("Exception writing to internal frame buffer", e);
+            }
+            fb.close();
+          }
+          public void onError(Exception e) {
+            byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
+            org.apache.thrift.TBase msg;
+            listSelfArestas_result result = new listSelfArestas_result();
+            {
+              msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
+              msg = (org.apache.thrift.TBase)new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, e.getMessage());
+            }
+            try {
+              fcall.sendResponse(fb,msg,msgType,seqid);
+              return;
+            } catch (Exception ex) {
+              LOGGER.error("Exception writing to internal frame buffer", ex);
+            }
+            fb.close();
+          }
+        };
+      }
+
+      protected boolean isOneway() {
+        return false;
+      }
+
+      public void start(I iface, listSelfArestas_args args, org.apache.thrift.async.AsyncMethodCallback<List<Aresta>> resultHandler) throws TException {
+        iface.listSelfArestas(resultHandler);
+      }
+    }
+
+    public static class menorCaminho<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, menorCaminho_args, List<Vertice>> {
+      public menorCaminho() {
+        super("menorCaminho");
+      }
+
+      public menorCaminho_args getEmptyArgsInstance() {
+        return new menorCaminho_args();
+      }
+
+      public AsyncMethodCallback<List<Vertice>> getResultHandler(final AsyncFrameBuffer fb, final int seqid) {
+        final org.apache.thrift.AsyncProcessFunction fcall = this;
+        return new AsyncMethodCallback<List<Vertice>>() { 
+          public void onComplete(List<Vertice> o) {
+            menorCaminho_result result = new menorCaminho_result();
+            result.success = o;
+            try {
+              fcall.sendResponse(fb,result, org.apache.thrift.protocol.TMessageType.REPLY,seqid);
+              return;
+            } catch (Exception e) {
+              LOGGER.error("Exception writing to internal frame buffer", e);
+            }
+            fb.close();
+          }
+          public void onError(Exception e) {
+            byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
+            org.apache.thrift.TBase msg;
+            menorCaminho_result result = new menorCaminho_result();
+            {
+              msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
+              msg = (org.apache.thrift.TBase)new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, e.getMessage());
+            }
+            try {
+              fcall.sendResponse(fb,msg,msgType,seqid);
+              return;
+            } catch (Exception ex) {
+              LOGGER.error("Exception writing to internal frame buffer", ex);
+            }
+            fb.close();
+          }
+        };
+      }
+
+      protected boolean isOneway() {
+        return false;
+      }
+
+      public void start(I iface, menorCaminho_args args, org.apache.thrift.async.AsyncMethodCallback<List<Vertice>> resultHandler) throws TException {
+        iface.menorCaminho(args.vertice1, args.vertice2,resultHandler);
       }
     }
 
@@ -15264,6 +15654,2168 @@ public class Graph {
               _elem55 = new Aresta();
               _elem55.read(iprot);
               struct.success.add(_elem55);
+            }
+          }
+          struct.setSuccessIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class listSelfVertices_args implements org.apache.thrift.TBase<listSelfVertices_args, listSelfVertices_args._Fields>, java.io.Serializable, Cloneable, Comparable<listSelfVertices_args>   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("listSelfVertices_args");
+
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new listSelfVertices_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new listSelfVertices_argsTupleSchemeFactory());
+    }
+
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+;
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(listSelfVertices_args.class, metaDataMap);
+    }
+
+    public listSelfVertices_args() {
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public listSelfVertices_args(listSelfVertices_args other) {
+    }
+
+    public listSelfVertices_args deepCopy() {
+      return new listSelfVertices_args(this);
+    }
+
+    @Override
+    public void clear() {
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof listSelfVertices_args)
+        return this.equals((listSelfVertices_args)that);
+      return false;
+    }
+
+    public boolean equals(listSelfVertices_args that) {
+      if (that == null)
+        return false;
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    @Override
+    public int compareTo(listSelfVertices_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("listSelfVertices_args(");
+      boolean first = true;
+
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+      // check for sub-struct validity
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class listSelfVertices_argsStandardSchemeFactory implements SchemeFactory {
+      public listSelfVertices_argsStandardScheme getScheme() {
+        return new listSelfVertices_argsStandardScheme();
+      }
+    }
+
+    private static class listSelfVertices_argsStandardScheme extends StandardScheme<listSelfVertices_args> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, listSelfVertices_args struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, listSelfVertices_args struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class listSelfVertices_argsTupleSchemeFactory implements SchemeFactory {
+      public listSelfVertices_argsTupleScheme getScheme() {
+        return new listSelfVertices_argsTupleScheme();
+      }
+    }
+
+    private static class listSelfVertices_argsTupleScheme extends TupleScheme<listSelfVertices_args> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, listSelfVertices_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, listSelfVertices_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+      }
+    }
+
+  }
+
+  public static class listSelfVertices_result implements org.apache.thrift.TBase<listSelfVertices_result, listSelfVertices_result._Fields>, java.io.Serializable, Cloneable, Comparable<listSelfVertices_result>   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("listSelfVertices_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new listSelfVertices_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new listSelfVertices_resultTupleSchemeFactory());
+    }
+
+    public List<Vertice> success; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
+              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Vertice.class))));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(listSelfVertices_result.class, metaDataMap);
+    }
+
+    public listSelfVertices_result() {
+    }
+
+    public listSelfVertices_result(
+      List<Vertice> success)
+    {
+      this();
+      this.success = success;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public listSelfVertices_result(listSelfVertices_result other) {
+      if (other.isSetSuccess()) {
+        List<Vertice> __this__success = new ArrayList<Vertice>(other.success.size());
+        for (Vertice other_element : other.success) {
+          __this__success.add(new Vertice(other_element));
+        }
+        this.success = __this__success;
+      }
+    }
+
+    public listSelfVertices_result deepCopy() {
+      return new listSelfVertices_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+    }
+
+    public int getSuccessSize() {
+      return (this.success == null) ? 0 : this.success.size();
+    }
+
+    public java.util.Iterator<Vertice> getSuccessIterator() {
+      return (this.success == null) ? null : this.success.iterator();
+    }
+
+    public void addToSuccess(Vertice elem) {
+      if (this.success == null) {
+        this.success = new ArrayList<Vertice>();
+      }
+      this.success.add(elem);
+    }
+
+    public List<Vertice> getSuccess() {
+      return this.success;
+    }
+
+    public listSelfVertices_result setSuccess(List<Vertice> success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((List<Vertice>)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof listSelfVertices_result)
+        return this.equals((listSelfVertices_result)that);
+      return false;
+    }
+
+    public boolean equals(listSelfVertices_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    @Override
+    public int compareTo(listSelfVertices_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(other.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, other.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+      }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("listSelfVertices_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+      // check for sub-struct validity
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class listSelfVertices_resultStandardSchemeFactory implements SchemeFactory {
+      public listSelfVertices_resultStandardScheme getScheme() {
+        return new listSelfVertices_resultStandardScheme();
+      }
+    }
+
+    private static class listSelfVertices_resultStandardScheme extends StandardScheme<listSelfVertices_result> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, listSelfVertices_result struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 0: // SUCCESS
+              if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
+                {
+                  org.apache.thrift.protocol.TList _list56 = iprot.readListBegin();
+                  struct.success = new ArrayList<Vertice>(_list56.size);
+                  for (int _i57 = 0; _i57 < _list56.size; ++_i57)
+                  {
+                    Vertice _elem58;
+                    _elem58 = new Vertice();
+                    _elem58.read(iprot);
+                    struct.success.add(_elem58);
+                  }
+                  iprot.readListEnd();
+                }
+                struct.setSuccessIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, listSelfVertices_result struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.success != null) {
+          oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+          {
+            oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
+            for (Vertice _iter59 : struct.success)
+            {
+              _iter59.write(oprot);
+            }
+            oprot.writeListEnd();
+          }
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class listSelfVertices_resultTupleSchemeFactory implements SchemeFactory {
+      public listSelfVertices_resultTupleScheme getScheme() {
+        return new listSelfVertices_resultTupleScheme();
+      }
+    }
+
+    private static class listSelfVertices_resultTupleScheme extends TupleScheme<listSelfVertices_result> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, listSelfVertices_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetSuccess()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetSuccess()) {
+          {
+            oprot.writeI32(struct.success.size());
+            for (Vertice _iter60 : struct.success)
+            {
+              _iter60.write(oprot);
+            }
+          }
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, listSelfVertices_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          {
+            org.apache.thrift.protocol.TList _list61 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<Vertice>(_list61.size);
+            for (int _i62 = 0; _i62 < _list61.size; ++_i62)
+            {
+              Vertice _elem63;
+              _elem63 = new Vertice();
+              _elem63.read(iprot);
+              struct.success.add(_elem63);
+            }
+          }
+          struct.setSuccessIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class listSelfArestas_args implements org.apache.thrift.TBase<listSelfArestas_args, listSelfArestas_args._Fields>, java.io.Serializable, Cloneable, Comparable<listSelfArestas_args>   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("listSelfArestas_args");
+
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new listSelfArestas_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new listSelfArestas_argsTupleSchemeFactory());
+    }
+
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+;
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(listSelfArestas_args.class, metaDataMap);
+    }
+
+    public listSelfArestas_args() {
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public listSelfArestas_args(listSelfArestas_args other) {
+    }
+
+    public listSelfArestas_args deepCopy() {
+      return new listSelfArestas_args(this);
+    }
+
+    @Override
+    public void clear() {
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof listSelfArestas_args)
+        return this.equals((listSelfArestas_args)that);
+      return false;
+    }
+
+    public boolean equals(listSelfArestas_args that) {
+      if (that == null)
+        return false;
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    @Override
+    public int compareTo(listSelfArestas_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("listSelfArestas_args(");
+      boolean first = true;
+
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+      // check for sub-struct validity
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class listSelfArestas_argsStandardSchemeFactory implements SchemeFactory {
+      public listSelfArestas_argsStandardScheme getScheme() {
+        return new listSelfArestas_argsStandardScheme();
+      }
+    }
+
+    private static class listSelfArestas_argsStandardScheme extends StandardScheme<listSelfArestas_args> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, listSelfArestas_args struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, listSelfArestas_args struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class listSelfArestas_argsTupleSchemeFactory implements SchemeFactory {
+      public listSelfArestas_argsTupleScheme getScheme() {
+        return new listSelfArestas_argsTupleScheme();
+      }
+    }
+
+    private static class listSelfArestas_argsTupleScheme extends TupleScheme<listSelfArestas_args> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, listSelfArestas_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, listSelfArestas_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+      }
+    }
+
+  }
+
+  public static class listSelfArestas_result implements org.apache.thrift.TBase<listSelfArestas_result, listSelfArestas_result._Fields>, java.io.Serializable, Cloneable, Comparable<listSelfArestas_result>   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("listSelfArestas_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new listSelfArestas_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new listSelfArestas_resultTupleSchemeFactory());
+    }
+
+    public List<Aresta> success; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
+              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Aresta.class))));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(listSelfArestas_result.class, metaDataMap);
+    }
+
+    public listSelfArestas_result() {
+    }
+
+    public listSelfArestas_result(
+      List<Aresta> success)
+    {
+      this();
+      this.success = success;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public listSelfArestas_result(listSelfArestas_result other) {
+      if (other.isSetSuccess()) {
+        List<Aresta> __this__success = new ArrayList<Aresta>(other.success.size());
+        for (Aresta other_element : other.success) {
+          __this__success.add(new Aresta(other_element));
+        }
+        this.success = __this__success;
+      }
+    }
+
+    public listSelfArestas_result deepCopy() {
+      return new listSelfArestas_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+    }
+
+    public int getSuccessSize() {
+      return (this.success == null) ? 0 : this.success.size();
+    }
+
+    public java.util.Iterator<Aresta> getSuccessIterator() {
+      return (this.success == null) ? null : this.success.iterator();
+    }
+
+    public void addToSuccess(Aresta elem) {
+      if (this.success == null) {
+        this.success = new ArrayList<Aresta>();
+      }
+      this.success.add(elem);
+    }
+
+    public List<Aresta> getSuccess() {
+      return this.success;
+    }
+
+    public listSelfArestas_result setSuccess(List<Aresta> success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((List<Aresta>)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof listSelfArestas_result)
+        return this.equals((listSelfArestas_result)that);
+      return false;
+    }
+
+    public boolean equals(listSelfArestas_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    @Override
+    public int compareTo(listSelfArestas_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(other.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, other.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+      }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("listSelfArestas_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+      // check for sub-struct validity
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class listSelfArestas_resultStandardSchemeFactory implements SchemeFactory {
+      public listSelfArestas_resultStandardScheme getScheme() {
+        return new listSelfArestas_resultStandardScheme();
+      }
+    }
+
+    private static class listSelfArestas_resultStandardScheme extends StandardScheme<listSelfArestas_result> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, listSelfArestas_result struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 0: // SUCCESS
+              if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
+                {
+                  org.apache.thrift.protocol.TList _list64 = iprot.readListBegin();
+                  struct.success = new ArrayList<Aresta>(_list64.size);
+                  for (int _i65 = 0; _i65 < _list64.size; ++_i65)
+                  {
+                    Aresta _elem66;
+                    _elem66 = new Aresta();
+                    _elem66.read(iprot);
+                    struct.success.add(_elem66);
+                  }
+                  iprot.readListEnd();
+                }
+                struct.setSuccessIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, listSelfArestas_result struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.success != null) {
+          oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+          {
+            oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
+            for (Aresta _iter67 : struct.success)
+            {
+              _iter67.write(oprot);
+            }
+            oprot.writeListEnd();
+          }
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class listSelfArestas_resultTupleSchemeFactory implements SchemeFactory {
+      public listSelfArestas_resultTupleScheme getScheme() {
+        return new listSelfArestas_resultTupleScheme();
+      }
+    }
+
+    private static class listSelfArestas_resultTupleScheme extends TupleScheme<listSelfArestas_result> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, listSelfArestas_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetSuccess()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetSuccess()) {
+          {
+            oprot.writeI32(struct.success.size());
+            for (Aresta _iter68 : struct.success)
+            {
+              _iter68.write(oprot);
+            }
+          }
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, listSelfArestas_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          {
+            org.apache.thrift.protocol.TList _list69 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<Aresta>(_list69.size);
+            for (int _i70 = 0; _i70 < _list69.size; ++_i70)
+            {
+              Aresta _elem71;
+              _elem71 = new Aresta();
+              _elem71.read(iprot);
+              struct.success.add(_elem71);
+            }
+          }
+          struct.setSuccessIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class menorCaminho_args implements org.apache.thrift.TBase<menorCaminho_args, menorCaminho_args._Fields>, java.io.Serializable, Cloneable, Comparable<menorCaminho_args>   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("menorCaminho_args");
+
+    private static final org.apache.thrift.protocol.TField VERTICE1_FIELD_DESC = new org.apache.thrift.protocol.TField("vertice1", org.apache.thrift.protocol.TType.I32, (short)1);
+    private static final org.apache.thrift.protocol.TField VERTICE2_FIELD_DESC = new org.apache.thrift.protocol.TField("vertice2", org.apache.thrift.protocol.TType.I32, (short)2);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new menorCaminho_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new menorCaminho_argsTupleSchemeFactory());
+    }
+
+    public int vertice1; // required
+    public int vertice2; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      VERTICE1((short)1, "vertice1"),
+      VERTICE2((short)2, "vertice2");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // VERTICE1
+            return VERTICE1;
+          case 2: // VERTICE2
+            return VERTICE2;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    private static final int __VERTICE1_ISSET_ID = 0;
+    private static final int __VERTICE2_ISSET_ID = 1;
+    private byte __isset_bitfield = 0;
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.VERTICE1, new org.apache.thrift.meta_data.FieldMetaData("vertice1", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
+      tmpMap.put(_Fields.VERTICE2, new org.apache.thrift.meta_data.FieldMetaData("vertice2", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(menorCaminho_args.class, metaDataMap);
+    }
+
+    public menorCaminho_args() {
+    }
+
+    public menorCaminho_args(
+      int vertice1,
+      int vertice2)
+    {
+      this();
+      this.vertice1 = vertice1;
+      setVertice1IsSet(true);
+      this.vertice2 = vertice2;
+      setVertice2IsSet(true);
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public menorCaminho_args(menorCaminho_args other) {
+      __isset_bitfield = other.__isset_bitfield;
+      this.vertice1 = other.vertice1;
+      this.vertice2 = other.vertice2;
+    }
+
+    public menorCaminho_args deepCopy() {
+      return new menorCaminho_args(this);
+    }
+
+    @Override
+    public void clear() {
+      setVertice1IsSet(false);
+      this.vertice1 = 0;
+      setVertice2IsSet(false);
+      this.vertice2 = 0;
+    }
+
+    public int getVertice1() {
+      return this.vertice1;
+    }
+
+    public menorCaminho_args setVertice1(int vertice1) {
+      this.vertice1 = vertice1;
+      setVertice1IsSet(true);
+      return this;
+    }
+
+    public void unsetVertice1() {
+      __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __VERTICE1_ISSET_ID);
+    }
+
+    /** Returns true if field vertice1 is set (has been assigned a value) and false otherwise */
+    public boolean isSetVertice1() {
+      return EncodingUtils.testBit(__isset_bitfield, __VERTICE1_ISSET_ID);
+    }
+
+    public void setVertice1IsSet(boolean value) {
+      __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __VERTICE1_ISSET_ID, value);
+    }
+
+    public int getVertice2() {
+      return this.vertice2;
+    }
+
+    public menorCaminho_args setVertice2(int vertice2) {
+      this.vertice2 = vertice2;
+      setVertice2IsSet(true);
+      return this;
+    }
+
+    public void unsetVertice2() {
+      __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __VERTICE2_ISSET_ID);
+    }
+
+    /** Returns true if field vertice2 is set (has been assigned a value) and false otherwise */
+    public boolean isSetVertice2() {
+      return EncodingUtils.testBit(__isset_bitfield, __VERTICE2_ISSET_ID);
+    }
+
+    public void setVertice2IsSet(boolean value) {
+      __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __VERTICE2_ISSET_ID, value);
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case VERTICE1:
+        if (value == null) {
+          unsetVertice1();
+        } else {
+          setVertice1((Integer)value);
+        }
+        break;
+
+      case VERTICE2:
+        if (value == null) {
+          unsetVertice2();
+        } else {
+          setVertice2((Integer)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case VERTICE1:
+        return Integer.valueOf(getVertice1());
+
+      case VERTICE2:
+        return Integer.valueOf(getVertice2());
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case VERTICE1:
+        return isSetVertice1();
+      case VERTICE2:
+        return isSetVertice2();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof menorCaminho_args)
+        return this.equals((menorCaminho_args)that);
+      return false;
+    }
+
+    public boolean equals(menorCaminho_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_vertice1 = true;
+      boolean that_present_vertice1 = true;
+      if (this_present_vertice1 || that_present_vertice1) {
+        if (!(this_present_vertice1 && that_present_vertice1))
+          return false;
+        if (this.vertice1 != that.vertice1)
+          return false;
+      }
+
+      boolean this_present_vertice2 = true;
+      boolean that_present_vertice2 = true;
+      if (this_present_vertice2 || that_present_vertice2) {
+        if (!(this_present_vertice2 && that_present_vertice2))
+          return false;
+        if (this.vertice2 != that.vertice2)
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    @Override
+    public int compareTo(menorCaminho_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+
+      lastComparison = Boolean.valueOf(isSetVertice1()).compareTo(other.isSetVertice1());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetVertice1()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.vertice1, other.vertice1);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = Boolean.valueOf(isSetVertice2()).compareTo(other.isSetVertice2());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetVertice2()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.vertice2, other.vertice2);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("menorCaminho_args(");
+      boolean first = true;
+
+      sb.append("vertice1:");
+      sb.append(this.vertice1);
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("vertice2:");
+      sb.append(this.vertice2);
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+      // check for sub-struct validity
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
+        __isset_bitfield = 0;
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class menorCaminho_argsStandardSchemeFactory implements SchemeFactory {
+      public menorCaminho_argsStandardScheme getScheme() {
+        return new menorCaminho_argsStandardScheme();
+      }
+    }
+
+    private static class menorCaminho_argsStandardScheme extends StandardScheme<menorCaminho_args> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, menorCaminho_args struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 1: // VERTICE1
+              if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
+                struct.vertice1 = iprot.readI32();
+                struct.setVertice1IsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            case 2: // VERTICE2
+              if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
+                struct.vertice2 = iprot.readI32();
+                struct.setVertice2IsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, menorCaminho_args struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        oprot.writeFieldBegin(VERTICE1_FIELD_DESC);
+        oprot.writeI32(struct.vertice1);
+        oprot.writeFieldEnd();
+        oprot.writeFieldBegin(VERTICE2_FIELD_DESC);
+        oprot.writeI32(struct.vertice2);
+        oprot.writeFieldEnd();
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class menorCaminho_argsTupleSchemeFactory implements SchemeFactory {
+      public menorCaminho_argsTupleScheme getScheme() {
+        return new menorCaminho_argsTupleScheme();
+      }
+    }
+
+    private static class menorCaminho_argsTupleScheme extends TupleScheme<menorCaminho_args> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, menorCaminho_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetVertice1()) {
+          optionals.set(0);
+        }
+        if (struct.isSetVertice2()) {
+          optionals.set(1);
+        }
+        oprot.writeBitSet(optionals, 2);
+        if (struct.isSetVertice1()) {
+          oprot.writeI32(struct.vertice1);
+        }
+        if (struct.isSetVertice2()) {
+          oprot.writeI32(struct.vertice2);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, menorCaminho_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(2);
+        if (incoming.get(0)) {
+          struct.vertice1 = iprot.readI32();
+          struct.setVertice1IsSet(true);
+        }
+        if (incoming.get(1)) {
+          struct.vertice2 = iprot.readI32();
+          struct.setVertice2IsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class menorCaminho_result implements org.apache.thrift.TBase<menorCaminho_result, menorCaminho_result._Fields>, java.io.Serializable, Cloneable, Comparable<menorCaminho_result>   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("menorCaminho_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new menorCaminho_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new menorCaminho_resultTupleSchemeFactory());
+    }
+
+    public List<Vertice> success; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
+              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Vertice.class))));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(menorCaminho_result.class, metaDataMap);
+    }
+
+    public menorCaminho_result() {
+    }
+
+    public menorCaminho_result(
+      List<Vertice> success)
+    {
+      this();
+      this.success = success;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public menorCaminho_result(menorCaminho_result other) {
+      if (other.isSetSuccess()) {
+        List<Vertice> __this__success = new ArrayList<Vertice>(other.success.size());
+        for (Vertice other_element : other.success) {
+          __this__success.add(new Vertice(other_element));
+        }
+        this.success = __this__success;
+      }
+    }
+
+    public menorCaminho_result deepCopy() {
+      return new menorCaminho_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+    }
+
+    public int getSuccessSize() {
+      return (this.success == null) ? 0 : this.success.size();
+    }
+
+    public java.util.Iterator<Vertice> getSuccessIterator() {
+      return (this.success == null) ? null : this.success.iterator();
+    }
+
+    public void addToSuccess(Vertice elem) {
+      if (this.success == null) {
+        this.success = new ArrayList<Vertice>();
+      }
+      this.success.add(elem);
+    }
+
+    public List<Vertice> getSuccess() {
+      return this.success;
+    }
+
+    public menorCaminho_result setSuccess(List<Vertice> success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((List<Vertice>)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof menorCaminho_result)
+        return this.equals((menorCaminho_result)that);
+      return false;
+    }
+
+    public boolean equals(menorCaminho_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    @Override
+    public int compareTo(menorCaminho_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(other.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, other.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+      }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("menorCaminho_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+      // check for sub-struct validity
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class menorCaminho_resultStandardSchemeFactory implements SchemeFactory {
+      public menorCaminho_resultStandardScheme getScheme() {
+        return new menorCaminho_resultStandardScheme();
+      }
+    }
+
+    private static class menorCaminho_resultStandardScheme extends StandardScheme<menorCaminho_result> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, menorCaminho_result struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 0: // SUCCESS
+              if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
+                {
+                  org.apache.thrift.protocol.TList _list72 = iprot.readListBegin();
+                  struct.success = new ArrayList<Vertice>(_list72.size);
+                  for (int _i73 = 0; _i73 < _list72.size; ++_i73)
+                  {
+                    Vertice _elem74;
+                    _elem74 = new Vertice();
+                    _elem74.read(iprot);
+                    struct.success.add(_elem74);
+                  }
+                  iprot.readListEnd();
+                }
+                struct.setSuccessIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, menorCaminho_result struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.success != null) {
+          oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+          {
+            oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
+            for (Vertice _iter75 : struct.success)
+            {
+              _iter75.write(oprot);
+            }
+            oprot.writeListEnd();
+          }
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class menorCaminho_resultTupleSchemeFactory implements SchemeFactory {
+      public menorCaminho_resultTupleScheme getScheme() {
+        return new menorCaminho_resultTupleScheme();
+      }
+    }
+
+    private static class menorCaminho_resultTupleScheme extends TupleScheme<menorCaminho_result> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, menorCaminho_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetSuccess()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetSuccess()) {
+          {
+            oprot.writeI32(struct.success.size());
+            for (Vertice _iter76 : struct.success)
+            {
+              _iter76.write(oprot);
+            }
+          }
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, menorCaminho_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          {
+            org.apache.thrift.protocol.TList _list77 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<Vertice>(_list77.size);
+            for (int _i78 = 0; _i78 < _list77.size; ++_i78)
+            {
+              Vertice _elem79;
+              _elem79 = new Vertice();
+              _elem79.read(iprot);
+              struct.success.add(_elem79);
             }
           }
           struct.setSuccessIsSet(true);
