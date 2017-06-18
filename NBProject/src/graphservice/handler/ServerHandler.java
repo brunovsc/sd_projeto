@@ -274,6 +274,12 @@ public class ServerHandler implements Graph.Iface{
 
     @Override
     public boolean deleteVertice(int key) throws KeyNotFound, ResourceInUse, TException {
+        int server = processRequest(key);
+        if(server != selfId){
+            logForwardedRequest(server);
+            boolean p = clients[server].deleteVertice(key);
+            return p;
+        }
         verifyResourceVertice(key);
         
         logForOperation(2);
@@ -296,6 +302,12 @@ public class ServerHandler implements Graph.Iface{
 
     @Override
     public Vertice readVertice(int key) throws KeyNotFound, ResourceInUse, TException {
+        int server = processRequest(key);
+        if(server != selfId){
+            logForwardedRequest(server);
+            Vertice p = clients[server].readVertice(key);
+            return p;
+        }
         verifyResourceVertice(key);
         
         logForOperation(3);
@@ -311,6 +323,12 @@ public class ServerHandler implements Graph.Iface{
 
     @Override
     public boolean updateVertice(int nome, int cor, double peso, String descricao) throws KeyNotFound, ResourceInUse, TException {
+        int server = processRequest(nome);
+        if(server != selfId){
+            logForwardedRequest(server);
+            boolean p = clients[server].updateVertice(nome, cor, peso, descricao);
+            return p;
+        }
         verifyResourceVertice(nome); 
         
         logForOperation(4);
@@ -329,6 +347,12 @@ public class ServerHandler implements Graph.Iface{
 
     @Override
     public boolean createAresta(int vertice1, int vertice2, double peso, boolean direcionado, String descricao) throws KeyAlreadyUsed, ResourceInUse, TException {
+        int server = processRequest(vertice1);
+        if(server != selfId){
+            logForwardedRequest(server);
+            boolean p = clients[server].createAresta(vertice1, vertice2, peso, direcionado, descricao);
+            return p;
+        }
         verifyResourceAresta(vertice1, vertice2);
         
         logForOperation(5);
@@ -369,6 +393,12 @@ public class ServerHandler implements Graph.Iface{
 
     @Override
     public boolean deleteAresta(int vertice1, int vertice2) throws KeyNotFound, ResourceInUse, TException {
+        int server = processRequest(vertice1);
+        if(server != selfId){
+            logForwardedRequest(server);
+            boolean p = clients[server].deleteAresta(vertice1, vertice2);
+            return p;
+        }
         verifyResourceAresta(vertice1, vertice2);        
         
         logForOperation(6);
@@ -384,6 +414,12 @@ public class ServerHandler implements Graph.Iface{
 
     @Override
     public Aresta readAresta(int vertice1, int vertice2) throws KeyNotFound, ResourceInUse, TException {
+        int server = processRequest(vertice1);
+        if(server != selfId){
+            logForwardedRequest(server);
+            Aresta p = clients[server].readAresta(vertice1, vertice2);
+            return p;
+        }
         verifyResourceAresta(vertice1, vertice2);
         
         logForOperation(7);
@@ -398,6 +434,12 @@ public class ServerHandler implements Graph.Iface{
 
     @Override
     public boolean updateAresta(int vertice1, int vertice2, double peso, boolean direcionado, String descricao) throws KeyNotFound, ResourceInUse, TException {
+        int server = processRequest(vertice1);
+        if(server != selfId){
+            logForwardedRequest(server);
+            boolean p = clients[server].updateAresta(vertice1, vertice2, peso, direcionado, descricao);
+            return p;
+        }
         verifyResourceAresta(vertice1, vertice2);
         
         logForOperation(8);
