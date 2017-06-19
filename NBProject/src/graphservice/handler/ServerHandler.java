@@ -215,6 +215,15 @@ public class ServerHandler implements Graph.Iface{
             case 13:
                 System.out.println("List Arestas");
                 break;
+            case 14:
+                System.out.println("List Self Vertices");
+                break;
+            case 15:
+                System.out.println("List Self Arestas");
+                break;
+            case 16:
+                System.out.println("Menor Caminho");
+                break;
             default:
                 break;
         }
@@ -538,13 +547,21 @@ public class ServerHandler implements Graph.Iface{
 
     @Override
     public List<Vertice> listVertices(){
-
-        return null;
+        logForOperation(12);
+        List<Vertice> vertices = grafo.vertices;
+        for(int i = 0; i < N; i++){
+            if(i != selfId){
+                try{
+                    vertices.addAll(clients[i].listSelfVertices());
+                } catch(Exception e){}
+            }
+        }
+        return vertices;
     }
     
-    //@Override
+    @Override
     public List<Vertice> listSelfVertices(){
-        logForOperation(12);
+        logForOperation(14);
         if(grafo.isSetVertices()){
             return grafo.vertices;
         }
@@ -554,6 +571,21 @@ public class ServerHandler implements Graph.Iface{
     @Override
     public List<Aresta> listArestas(){
         logForOperation(13);
+        List<Aresta> arestas = grafo.arestas;
+        for(int i = 0; i < N; i++){
+            if(i != selfId){
+                try{
+                    arestas.addAll(clients[i].listSelfArestas());
+                } catch(Exception e){}
+            }
+        }
+        return arestas;
+        
+    }
+
+    @Override
+    public List<Aresta> listSelfArestas() throws TException {
+        logForOperation(15);
         if(grafo.isSetArestas()){
             return grafo.arestas;
         }
@@ -561,12 +593,8 @@ public class ServerHandler implements Graph.Iface{
     }
 
     @Override
-    public List<Aresta> listSelfArestas() throws TException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public List<Vertice> menorCaminho(int vertice1, int vertice2) throws TException {
+        logForOperation(16);
         Grafo fullGraph = getFullGraph();
         
         Vertice v = findVertice(fullGraph, vertice1);
@@ -577,12 +605,6 @@ public class ServerHandler implements Graph.Iface{
         algoritmo.executa(v);
 
         LinkedList<Vertice> caminho = algoritmo.getCaminho(destino);
-        /*
-        for(Vertice vertice: caminho) {
-
-                System.out.println(vertice.getNome());
-
-        }*/
         return caminho;
     }
     

@@ -11,6 +11,7 @@ import graphservice.model.Vertice;
 import static java.lang.System.exit;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.ThreadLocalRandom;
 import org.apache.thrift.TException;
 import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TSocket;
@@ -26,15 +27,18 @@ public class GraphClient {
     private static TTransport transport;
     private static TProtocol protocol;
     private static Graph.Client client;
-    
+    private static int N = 3;
+    private static int firstPort = 9090;
     
     public static void main(String [] args) {
         try {
-            transport = new TSocket("localhost", 9093);
+            int port = ThreadLocalRandom.current().nextInt(firstPort, firstPort + N);
+            transport = new TSocket("localhost", port);
             transport.open();
 
             protocol = new TBinaryProtocol(transport);
             client = new Graph.Client(protocol);
+            System.out.println("Client connected to port " + port);
         } catch (TException x){
 
             x.printStackTrace();
@@ -50,7 +54,9 @@ public class GraphClient {
                 }
             }
             try {
-                showGrafo();
+                List<Vertice> vertices = client.listVertices();
+                List<Aresta> arestas = client.listArestas();
+                showGrafo(vertices, arestas);
             } catch (TException ex) {
                 System.out.println(ex);
             }
@@ -67,23 +73,21 @@ public class GraphClient {
         }
     }
 
-    public static void showGrafo() throws TException{
+    public static void showGrafo(List<Vertice> vertices, List<Aresta> arestas) throws TException{
         System.out.println("\n\n      GRAFO: ");
-        showVertices();
+        showVertices(vertices);
         System.out.println("");
-        showArestas();
+        showArestas(arestas);
     }
 
-    public static void showVertices() throws TException{
-        List<Vertice> vertices = client.listVertices();
+    public static void showVertices(List<Vertice> vertices) throws TException{
         System.out.print("      - Vertices: ");
         for(Vertice vertice: vertices){
             System.out.print(vertice.nome + ", ");
         }
     }
 
-    public static void showArestas() throws TException{
-        List<Aresta> arestas = client.listArestas();
+    public static void showArestas(List<Aresta> arestas) throws TException{
         System.out.print("      - Arestas: ");
         String a;
         for(Aresta aresta: arestas){
@@ -131,11 +135,14 @@ public class GraphClient {
                 System.out.println("|   1. Listar vertices aresta  |");
                 System.out.println("|   2. Listar arestas vertice  |");
                 System.out.println("|   3. Listar vizinhos         |");
+                System.out.println("|   4. Menor caminho           |");
                 break;
             case 4:
-                System.out.println("|      1. Listar vertices      |");
-                System.out.println("|      2. Listar arestas       |");
-                System.out.println("|      3. Exibir grafo         |");
+                System.out.println("|   1. Listar vertices         |");
+                System.out.println("|   2. Listar arestas          |");
+                System.out.println("|   3. Listar vertices locais  |");
+                System.out.println("|   4. Listar arestas locais   |");
+                System.out.println("|   5. Exibir grafo            |");
                 break;
             default:
                 System.out.println("");
@@ -304,14 +311,42 @@ public class GraphClient {
                     }
                 }
                 break;
+            case 34:
+                System.out.println("Vertice 1: ");
+                vertice1 = in.nextInt();
+                System.out.println("Vertice 2: ");
+                vertice2 = in.nextInt();
+                
+                List<Vertice> caminho = client.menorCaminho(vertice1, vertice2);
+                if(caminho != null){
+                    System.out.print("Caminho: ");
+                    for(Vertice vert: caminho){
+                        System.out.print(" " + vert.nome);
+                    }
+                }
+                else{
+                    System.out.println("Caminho não encontrado");
+                }
             case 41:
-                showVertices();
+                vertices = client.listVertices();
+                showVertices(vertices);
                 break;
             case 42:
-                showArestas();
+                arestas = client.listArestas();
+                showArestas(arestas);
                 break;
             case 43:
-                showGrafo();
+                vertices = client.listSelfVertices();
+                showVertices(vertices);
+                break;
+            case 44:
+                arestas = client.listSelfArestas();
+                showArestas(arestas);
+                break;
+            case 45:
+                vertices = client.listVertices();
+                arestas = client.listArestas();
+                showGrafo(vertices, arestas);
                 break;
             default:
                 System.out.println("\nOperacao desconhecida");
