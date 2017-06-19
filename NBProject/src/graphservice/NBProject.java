@@ -30,11 +30,8 @@ public class NBProject {
                 arguments[j+2] = ports[j];
             }
             
-            handlers.add(GraphServer.initServer(arguments));
+            //handlers.add(GraphServer.initServer(arguments));
         }
         
-        for(ServerHandler h: handlers){
-            h.connectServers();
-        }
     }
 }

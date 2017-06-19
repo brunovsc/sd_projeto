@@ -52,23 +52,15 @@ public class ServerHandler implements Graph.Iface{
         } 
     }    
     
-    public void connectServers(){
-        
-        transports = new TTransport[N];
-        protocols = new TProtocol[N];
-        clients = new Graph.Client[N];
-        for(int i = 0; i < N; i++){
-            if(ports[i] != selfPort){
-                try{
-                    transports[i] = new TSocket("localhost", ports[i]);
-                    transports[i].open();
-                    protocols[i] = new TBinaryProtocol(transports[i]);
-                    clients[i] = new Graph.Client(protocols[i]);
-                    System.out.println("Server " + selfPort + " connected to server " + ports[i]);
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
-            }
+    public void connectToServerId(int id, int port){
+        try{
+            transports[id] = new TSocket("localhost", port);
+            transports[id].open();
+            protocols[id] = new TBinaryProtocol(transports[id]);
+            clients[id] = new Graph.Client(protocols[id]);
+            System.out.println("Server " + selfPort + " connected to server " + port);
+        }catch(TTransportException e){
+            System.out.println(e);
         }
     }
     

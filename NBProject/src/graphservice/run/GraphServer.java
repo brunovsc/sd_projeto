@@ -7,7 +7,10 @@ package graphservice.run;
 
 import graphservice.handler.Graph;
 import graphservice.handler.ServerHandler;
+import static java.lang.Thread.sleep;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.transport.TServerSocket;
 import org.apache.thrift.transport.TServerTransport;
@@ -25,17 +28,6 @@ public class GraphServer {
     private static Graph.Processor processor;
     private static ServerHandler handler;
     
-    public static ServerHandler initServer(String []args){
-        main(args);
-        return handler;
-    }
-    
-    public static void finish(){
-        
-        
-    }
-
-   
     public static void main(String [] args){
     
         try {
@@ -43,26 +35,39 @@ public class GraphServer {
             TServerTransport serverTransport = new TServerSocket(Integer.parseInt(args[1]));
             handler = new ServerHandler(args);
             processor = new Graph.Processor(handler);
-/*
-            handler.createVertice(1, 1, 1.0, "1");
-            handler.createVertice(2, 2, 2.0, "2");
-            handler.createVertice(3, 3, 3.0, "3");
 
-            handler.createAresta(1, 2, 1.2, false, "1.2");
-            handler.createAresta(2, 3, 2.3, true, "2.3 d");
-            handler.createAresta(3, 1, 3.1, false, "3.1");
-            */
             TServer server = new TThreadPoolServer(new TThreadPoolServer.Args(serverTransport).processor(processor));
 
             System.out.println("Starting the simple server on port " + args[1]);
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                   server.serve();
+                   connectServers(args);
                 }
             }).start();
+            server.serve();
         } catch (NumberFormatException | TTransportException x){
             System.out.println(x);
         }
+    }
+    
+    public static void connectServers(String []args){
+        int N = Integer.parseInt(args[0]);
+        int selfId = Integer.parseInt(args[1]);
+        int firstPort = Integer.parseInt(args[2]);
+        
+        for(int i = 0; i < selfId; i++){
+            if(i != selfId){
+                try{
+                    handler.connectToServerId(i, firstPort+i);
+                }catch(Exception e){
+                    try {
+                        sleep(1000);
+                    } catch (InterruptedException ex) {
+                        System.out.println(ex);
+                    }
+                }
+            }
+        }   
     }
 }
