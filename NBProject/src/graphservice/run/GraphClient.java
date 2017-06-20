@@ -32,7 +32,8 @@ public class GraphClient {
     
     public static void main(String [] args) {
         try {
-            int port = ThreadLocalRandom.current().nextInt(firstPort, firstPort + N);
+            //int port = ThreadLocalRandom.current().nextInt(firstPort, firstPort + N);
+            int port = 9092;
             transport = new TSocket("localhost", port);
             transport.open();
 

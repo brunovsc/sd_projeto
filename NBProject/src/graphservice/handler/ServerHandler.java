@@ -42,14 +42,17 @@ public class ServerHandler implements Graph.Iface{
         grafo.arestas = new ArrayList<>();
         
         N = Integer.parseInt(args[0]);
-        selfPort = Integer.parseInt(args[1]);
+        selfId = Integer.parseInt(args[1]);
+        int firstPort = Integer.parseInt(args[2]);
+        selfPort = firstPort + selfId;
         ports = new int[N];
         for(int i = 0; i < N; i++){
-            ports[i] = Integer.parseInt(args[i+2]);
-            if(ports[i] == selfPort){
-                selfId = i;
-            }
+            ports[i] = firstPort + i;
         } 
+        
+        transports = new TTransport[N];
+        protocols = new TProtocol[N];
+        clients = new Graph.Client[N];
     }    
     
     public void connectToServerId(int id, int port){
@@ -222,7 +225,7 @@ public class ServerHandler implements Graph.Iface{
     }    
     
     public void logForwardedRequest(int server){
-        System.out.println("Request forwarded from server " + selfPort + " to server " + ports[server]);
+        System.out.println("!! Request forwarded from server " + selfPort + " to server " + ports[server]);
     }
     
     public Vertice findVertice(Grafo grafo, int vertice){
@@ -540,15 +543,15 @@ public class ServerHandler implements Graph.Iface{
     @Override
     public List<Vertice> listVertices(){
         logForOperation(12);
-        List<Vertice> vertices = grafo.vertices;
+        List<Vertice> allVertices = grafo.vertices;
         for(int i = 0; i < N; i++){
             if(i != selfId){
                 try{
-                    vertices.addAll(clients[i].listSelfVertices());
+                    allVertices.addAll(clients[i].listSelfVertices());
                 } catch(Exception e){}
             }
         }
-        return vertices;
+        return allVertices;
     }
     
     @Override
@@ -563,15 +566,15 @@ public class ServerHandler implements Graph.Iface{
     @Override
     public List<Aresta> listArestas(){
         logForOperation(13);
-        List<Aresta> arestas = grafo.arestas;
+        List<Aresta> allArestas = grafo.arestas;
         for(int i = 0; i < N; i++){
             if(i != selfId){
                 try{
-                    arestas.addAll(clients[i].listSelfArestas());
+                    allArestas.addAll(clients[i].listSelfArestas());
                 } catch(Exception e){}
             }
         }
-        return arestas;
+        return allArestas;
         
     }
 

@@ -1,48 +1,46 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package graphservice.run;
 
 import graphservice.handler.Graph;
 import graphservice.handler.ServerHandler;
 import static java.lang.Thread.sleep;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.transport.TServerSocket;
 import org.apache.thrift.transport.TServerTransport;
-import org.apache.thrift.server.TServer.Args;
-import org.apache.thrift.server.TSimpleServer;
 import org.apache.thrift.server.TThreadPoolServer;
 import org.apache.thrift.transport.TTransportException;
 
-/**
- *
- * @author sd-server
- */
 public class GraphServer {
     
     private static Graph.Processor processor;
     private static ServerHandler handler;
+    private static int N;
+    private static int selfId;
+    private static int firstPort;
+    private static int selfPort;
+    private static final int RETRIES = 5;
+    private static final int WAIT_RETRY_CONNECTION = 1000;
     
     public static void main(String [] args){
-    
+            
+        N = Integer.parseInt(args[0]);
+        selfId = Integer.parseInt(args[1]);
+        firstPort = Integer.parseInt(args[2]);
+        selfPort = firstPort + selfId;
+        
+        System.out.println("===== Starting the server on port " + selfPort);
+        
         try {
-
-            TServerTransport serverTransport = new TServerSocket(Integer.parseInt(args[1]));
+               
+            TServerTransport serverTransport = new TServerSocket(selfPort);
             handler = new ServerHandler(args);
             processor = new Graph.Processor(handler);
 
             TServer server = new TThreadPoolServer(new TThreadPoolServer.Args(serverTransport).processor(processor));
 
-            System.out.println("Starting the simple server on port " + args[1]);
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                   connectServers(args);
+                   connectServers();
                 }
             }).start();
             server.serve();
@@ -51,23 +49,34 @@ public class GraphServer {
         }
     }
     
-    public static void connectServers(String []args){
-        int N = Integer.parseInt(args[0]);
-        int selfId = Integer.parseInt(args[1]);
-        int firstPort = Integer.parseInt(args[2]);
-        
-        for(int i = 0; i < selfId; i++){
+    public static void connectServers(){
+        System.out.println("\n##### Creating connections to other servers #####\n");
+        boolean connected;
+        int retried;
+        for(int i = 0; i < N; i++){
             if(i != selfId){
-                try{
-                    handler.connectToServerId(i, firstPort+i);
-                }catch(Exception e){
-                    try {
-                        sleep(1000);
-                    } catch (InterruptedException ex) {
-                        System.out.println(ex);
+                connected = false;
+                retried = 0;
+                while(!connected && retried < RETRIES){
+                    try{
+                        System.out.println("Trying to connect to port " + (firstPort+i));
+                        handler.connectToServerId(i, firstPort+i);
+                        connected = true;
+                    }catch(Exception e){
+                        try {
+                            System.out.println("Couldn't connect to server " + (firstPort+i) + " ... retrying in " + (WAIT_RETRY_CONNECTION / 1000) + " seconds");
+                            sleep(WAIT_RETRY_CONNECTION);
+                            retried++;
+                        } catch (InterruptedException ex) {
+                            System.out.println(ex);
+                        }
+                    }
+                    if(!connected){
+                        System.out.println("Unable to connect server on port " + (firstPort+i) + ". Finishing server...");
                     }
                 }
             }
         }   
+        System.out.println("\n##### Finished creating connections to other servers #####\n");
     }
 }
