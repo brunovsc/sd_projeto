@@ -543,12 +543,16 @@ public class ServerHandler implements Graph.Iface{
     @Override
     public List<Vertice> listVertices(){
         logForOperation(12);
-        List<Vertice> allVertices = grafo.vertices;
+        ArrayList<Vertice> allVertices = new ArrayList<>();
+        allVertices.addAll(grafo.vertices);
         for(int i = 0; i < N; i++){
             if(i != selfId){
                 try{
+                    System.out.println("Requesting vertices from " + ports[i]);
                     allVertices.addAll(clients[i].listSelfVertices());
-                } catch(Exception e){}
+                } catch(TException e){
+                    System.out.println("Failed to request vertices from " + ports[i]);
+                }
             }
         }
         return allVertices;
@@ -566,16 +570,19 @@ public class ServerHandler implements Graph.Iface{
     @Override
     public List<Aresta> listArestas(){
         logForOperation(13);
-        List<Aresta> allArestas = grafo.arestas;
+        ArrayList<Aresta> allArestas = new ArrayList<>();
+        allArestas.addAll(grafo.arestas);
         for(int i = 0; i < N; i++){
             if(i != selfId){
                 try{
+                    System.out.println("Requesting arestas from " + ports[i]);
                     allArestas.addAll(clients[i].listSelfArestas());
-                } catch(Exception e){}
+                } catch(TException e){
+                    System.out.println("Failed to request arestas from " + ports[i]);
+                }
             }
         }
-        return allArestas;
-        
+        return allArestas;  
     }
 
     @Override
