@@ -1,0 +1,9 @@
+===== Starting the server on port 9094
+
+##### Creating connections to other servers #####
+
+Trying to connect to port 9093
+Server 9094 connected to server 9093
+
+##### Finished creating connections to other servers #####
+

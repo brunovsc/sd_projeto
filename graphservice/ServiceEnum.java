@@ -4,8 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-package graphservice.model;
-
+package graphservice;
 
 import java.util.Map;
 import java.util.HashMap;

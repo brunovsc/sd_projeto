@@ -4,7 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-package graphservice.exception;
+package graphservice;
 
 import org.apache.thrift.scheme.IScheme;
 import org.apache.thrift.scheme.SchemeFactory;
@@ -32,25 +32,22 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class KeyAlreadyUsed extends TException implements org.apache.thrift.TBase<KeyAlreadyUsed, KeyAlreadyUsed._Fields>, java.io.Serializable, Cloneable, Comparable<KeyAlreadyUsed> {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("KeyAlreadyUsed");
+public class ResourceInUse extends TException implements org.apache.thrift.TBase<ResourceInUse, ResourceInUse._Fields>, java.io.Serializable, Cloneable, Comparable<ResourceInUse> {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("ResourceInUse");
 
   private static final org.apache.thrift.protocol.TField KEY_FIELD_DESC = new org.apache.thrift.protocol.TField("key", org.apache.thrift.protocol.TType.I32, (short)1);
-  private static final org.apache.thrift.protocol.TField ERROR_MESSAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("errorMessage", org.apache.thrift.protocol.TType.STRING, (short)2);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
-    schemes.put(StandardScheme.class, new KeyAlreadyUsedStandardSchemeFactory());
-    schemes.put(TupleScheme.class, new KeyAlreadyUsedTupleSchemeFactory());
+    schemes.put(StandardScheme.class, new ResourceInUseStandardSchemeFactory());
+    schemes.put(TupleScheme.class, new ResourceInUseTupleSchemeFactory());
   }
 
   public int key; // required
-  public String errorMessage; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    KEY((short)1, "key"),
-    ERROR_MESSAGE((short)2, "errorMessage");
+    KEY((short)1, "key");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -67,8 +64,6 @@ public class KeyAlreadyUsed extends TException implements org.apache.thrift.TBas
       switch(fieldId) {
         case 1: // KEY
           return KEY;
-        case 2: // ERROR_MESSAGE
-          return ERROR_MESSAGE;
         default:
           return null;
       }
@@ -116,52 +111,44 @@ public class KeyAlreadyUsed extends TException implements org.apache.thrift.TBas
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.KEY, new org.apache.thrift.meta_data.FieldMetaData("key", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
-    tmpMap.put(_Fields.ERROR_MESSAGE, new org.apache.thrift.meta_data.FieldMetaData("errorMessage", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(KeyAlreadyUsed.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(ResourceInUse.class, metaDataMap);
   }
 
-  public KeyAlreadyUsed() {
+  public ResourceInUse() {
   }
 
-  public KeyAlreadyUsed(
-    int key,
-    String errorMessage)
+  public ResourceInUse(
+    int key)
   {
     this();
     this.key = key;
     setKeyIsSet(true);
-    this.errorMessage = errorMessage;
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public KeyAlreadyUsed(KeyAlreadyUsed other) {
+  public ResourceInUse(ResourceInUse other) {
     __isset_bitfield = other.__isset_bitfield;
     this.key = other.key;
-    if (other.isSetErrorMessage()) {
-      this.errorMessage = other.errorMessage;
-    }
   }
 
-  public KeyAlreadyUsed deepCopy() {
-    return new KeyAlreadyUsed(this);
+  public ResourceInUse deepCopy() {
+    return new ResourceInUse(this);
   }
 
   @Override
   public void clear() {
     setKeyIsSet(false);
     this.key = 0;
-    this.errorMessage = null;
   }
 
   public int getKey() {
     return this.key;
   }
 
-  public KeyAlreadyUsed setKey(int key) {
+  public ResourceInUse setKey(int key) {
     this.key = key;
     setKeyIsSet(true);
     return this;
@@ -180,30 +167,6 @@ public class KeyAlreadyUsed extends TException implements org.apache.thrift.TBas
     __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __KEY_ISSET_ID, value);
   }
 
-  public String getErrorMessage() {
-    return this.errorMessage;
-  }
-
-  public KeyAlreadyUsed setErrorMessage(String errorMessage) {
-    this.errorMessage = errorMessage;
-    return this;
-  }
-
-  public void unsetErrorMessage() {
-    this.errorMessage = null;
-  }
-
-  /** Returns true if field errorMessage is set (has been assigned a value) and false otherwise */
-  public boolean isSetErrorMessage() {
-    return this.errorMessage != null;
-  }
-
-  public void setErrorMessageIsSet(boolean value) {
-    if (!value) {
-      this.errorMessage = null;
-    }
-  }
-
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case KEY:
@@ -214,14 +177,6 @@ public class KeyAlreadyUsed extends TException implements org.apache.thrift.TBas
       }
       break;
 
-    case ERROR_MESSAGE:
-      if (value == null) {
-        unsetErrorMessage();
-      } else {
-        setErrorMessage((String)value);
-      }
-      break;
-
     }
   }
 
@@ -229,9 +184,6 @@ public class KeyAlreadyUsed extends TException implements org.apache.thrift.TBas
     switch (field) {
     case KEY:
       return Integer.valueOf(getKey());
-
-    case ERROR_MESSAGE:
-      return getErrorMessage();
 
     }
     throw new IllegalStateException();
@@ -246,8 +198,6 @@ public class KeyAlreadyUsed extends TException implements org.apache.thrift.TBas
     switch (field) {
     case KEY:
       return isSetKey();
-    case ERROR_MESSAGE:
-      return isSetErrorMessage();
     }
     throw new IllegalStateException();
   }
@@ -256,12 +206,12 @@ public class KeyAlreadyUsed extends TException implements org.apache.thrift.TBas
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof KeyAlreadyUsed)
-      return this.equals((KeyAlreadyUsed)that);
+    if (that instanceof ResourceInUse)
+      return this.equals((ResourceInUse)that);
     return false;
   }
 
-  public boolean equals(KeyAlreadyUsed that) {
+  public boolean equals(ResourceInUse that) {
     if (that == null)
       return false;
 
@@ -274,15 +224,6 @@ public class KeyAlreadyUsed extends TException implements org.apache.thrift.TBas
         return false;
     }
 
-    boolean this_present_errorMessage = true && this.isSetErrorMessage();
-    boolean that_present_errorMessage = true && that.isSetErrorMessage();
-    if (this_present_errorMessage || that_present_errorMessage) {
-      if (!(this_present_errorMessage && that_present_errorMessage))
-        return false;
-      if (!this.errorMessage.equals(that.errorMessage))
-        return false;
-    }
-
     return true;
   }
 
@@ -292,7 +233,7 @@ public class KeyAlreadyUsed extends TException implements org.apache.thrift.TBas
   }
 
   @Override
-  public int compareTo(KeyAlreadyUsed other) {
+  public int compareTo(ResourceInUse other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
@@ -305,16 +246,6 @@ public class KeyAlreadyUsed extends TException implements org.apache.thrift.TBas
     }
     if (isSetKey()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.key, other.key);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetErrorMessage()).compareTo(other.isSetErrorMessage());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetErrorMessage()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.errorMessage, other.errorMessage);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -336,19 +267,11 @@ public class KeyAlreadyUsed extends TException implements org.apache.thrift.TBas
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("KeyAlreadyUsed(");
+    StringBuilder sb = new StringBuilder("ResourceInUse(");
     boolean first = true;
 
     sb.append("key:");
     sb.append(this.key);
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("errorMessage:");
-    if (this.errorMessage == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.errorMessage);
-    }
     first = false;
     sb.append(")");
     return sb.toString();
@@ -377,15 +300,15 @@ public class KeyAlreadyUsed extends TException implements org.apache.thrift.TBas
     }
   }
 
-  private static class KeyAlreadyUsedStandardSchemeFactory implements SchemeFactory {
-    public KeyAlreadyUsedStandardScheme getScheme() {
-      return new KeyAlreadyUsedStandardScheme();
+  private static class ResourceInUseStandardSchemeFactory implements SchemeFactory {
+    public ResourceInUseStandardScheme getScheme() {
+      return new ResourceInUseStandardScheme();
     }
   }
 
-  private static class KeyAlreadyUsedStandardScheme extends StandardScheme<KeyAlreadyUsed> {
+  private static class ResourceInUseStandardScheme extends StandardScheme<ResourceInUse> {
 
-    public void read(org.apache.thrift.protocol.TProtocol iprot, KeyAlreadyUsed struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol iprot, ResourceInUse struct) throws org.apache.thrift.TException {
       org.apache.thrift.protocol.TField schemeField;
       iprot.readStructBegin();
       while (true)
@@ -403,14 +326,6 @@ public class KeyAlreadyUsed extends TException implements org.apache.thrift.TBas
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 2: // ERROR_MESSAGE
-            if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
-              struct.errorMessage = iprot.readString();
-              struct.setErrorMessageIsSet(true);
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-            }
-            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
         }
@@ -422,62 +337,47 @@ public class KeyAlreadyUsed extends TException implements org.apache.thrift.TBas
       struct.validate();
     }
 
-    public void write(org.apache.thrift.protocol.TProtocol oprot, KeyAlreadyUsed struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol oprot, ResourceInUse struct) throws org.apache.thrift.TException {
       struct.validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
       oprot.writeFieldBegin(KEY_FIELD_DESC);
       oprot.writeI32(struct.key);
       oprot.writeFieldEnd();
-      if (struct.errorMessage != null) {
-        oprot.writeFieldBegin(ERROR_MESSAGE_FIELD_DESC);
-        oprot.writeString(struct.errorMessage);
-        oprot.writeFieldEnd();
-      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
 
   }
 
-  private static class KeyAlreadyUsedTupleSchemeFactory implements SchemeFactory {
-    public KeyAlreadyUsedTupleScheme getScheme() {
-      return new KeyAlreadyUsedTupleScheme();
+  private static class ResourceInUseTupleSchemeFactory implements SchemeFactory {
+    public ResourceInUseTupleScheme getScheme() {
+      return new ResourceInUseTupleScheme();
     }
   }
 
-  private static class KeyAlreadyUsedTupleScheme extends TupleScheme<KeyAlreadyUsed> {
+  private static class ResourceInUseTupleScheme extends TupleScheme<ResourceInUse> {
 
     @Override
-    public void write(org.apache.thrift.protocol.TProtocol prot, KeyAlreadyUsed struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol prot, ResourceInUse struct) throws org.apache.thrift.TException {
       TTupleProtocol oprot = (TTupleProtocol) prot;
       BitSet optionals = new BitSet();
       if (struct.isSetKey()) {
         optionals.set(0);
       }
-      if (struct.isSetErrorMessage()) {
-        optionals.set(1);
-      }
-      oprot.writeBitSet(optionals, 2);
+      oprot.writeBitSet(optionals, 1);
       if (struct.isSetKey()) {
         oprot.writeI32(struct.key);
-      }
-      if (struct.isSetErrorMessage()) {
-        oprot.writeString(struct.errorMessage);
       }
     }
 
     @Override
-    public void read(org.apache.thrift.protocol.TProtocol prot, KeyAlreadyUsed struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol prot, ResourceInUse struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(2);
+      BitSet incoming = iprot.readBitSet(1);
       if (incoming.get(0)) {
         struct.key = iprot.readI32();
         struct.setKeyIsSet(true);
-      }
-      if (incoming.get(1)) {
-        struct.errorMessage = iprot.readString();
-        struct.setErrorMessageIsSet(true);
       }
     }
   }

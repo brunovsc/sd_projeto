@@ -4,7 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-package graphservice.exception;
+package graphservice;
 
 import org.apache.thrift.scheme.IScheme;
 import org.apache.thrift.scheme.SchemeFactory;
@@ -32,22 +32,25 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ResourceInUse extends TException implements org.apache.thrift.TBase<ResourceInUse, ResourceInUse._Fields>, java.io.Serializable, Cloneable, Comparable<ResourceInUse> {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("ResourceInUse");
+public class KeyNotFound extends TException implements org.apache.thrift.TBase<KeyNotFound, KeyNotFound._Fields>, java.io.Serializable, Cloneable, Comparable<KeyNotFound> {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("KeyNotFound");
 
   private static final org.apache.thrift.protocol.TField KEY_FIELD_DESC = new org.apache.thrift.protocol.TField("key", org.apache.thrift.protocol.TType.I32, (short)1);
+  private static final org.apache.thrift.protocol.TField ERROR_MESSAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("errorMessage", org.apache.thrift.protocol.TType.STRING, (short)2);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
-    schemes.put(StandardScheme.class, new ResourceInUseStandardSchemeFactory());
-    schemes.put(TupleScheme.class, new ResourceInUseTupleSchemeFactory());
+    schemes.put(StandardScheme.class, new KeyNotFoundStandardSchemeFactory());
+    schemes.put(TupleScheme.class, new KeyNotFoundTupleSchemeFactory());
   }
 
   public int key; // required
+  public String errorMessage; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    KEY((short)1, "key");
+    KEY((short)1, "key"),
+    ERROR_MESSAGE((short)2, "errorMessage");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -64,6 +67,8 @@ public class ResourceInUse extends TException implements org.apache.thrift.TBase
       switch(fieldId) {
         case 1: // KEY
           return KEY;
+        case 2: // ERROR_MESSAGE
+          return ERROR_MESSAGE;
         default:
           return null;
       }
@@ -111,44 +116,52 @@ public class ResourceInUse extends TException implements org.apache.thrift.TBase
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.KEY, new org.apache.thrift.meta_data.FieldMetaData("key", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
+    tmpMap.put(_Fields.ERROR_MESSAGE, new org.apache.thrift.meta_data.FieldMetaData("errorMessage", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(ResourceInUse.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(KeyNotFound.class, metaDataMap);
   }
 
-  public ResourceInUse() {
+  public KeyNotFound() {
   }
 
-  public ResourceInUse(
-    int key)
+  public KeyNotFound(
+    int key,
+    String errorMessage)
   {
     this();
     this.key = key;
     setKeyIsSet(true);
+    this.errorMessage = errorMessage;
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public ResourceInUse(ResourceInUse other) {
+  public KeyNotFound(KeyNotFound other) {
     __isset_bitfield = other.__isset_bitfield;
     this.key = other.key;
+    if (other.isSetErrorMessage()) {
+      this.errorMessage = other.errorMessage;
+    }
   }
 
-  public ResourceInUse deepCopy() {
-    return new ResourceInUse(this);
+  public KeyNotFound deepCopy() {
+    return new KeyNotFound(this);
   }
 
   @Override
   public void clear() {
     setKeyIsSet(false);
     this.key = 0;
+    this.errorMessage = null;
   }
 
   public int getKey() {
     return this.key;
   }
 
-  public ResourceInUse setKey(int key) {
+  public KeyNotFound setKey(int key) {
     this.key = key;
     setKeyIsSet(true);
     return this;
@@ -167,6 +180,30 @@ public class ResourceInUse extends TException implements org.apache.thrift.TBase
     __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __KEY_ISSET_ID, value);
   }
 
+  public String getErrorMessage() {
+    return this.errorMessage;
+  }
+
+  public KeyNotFound setErrorMessage(String errorMessage) {
+    this.errorMessage = errorMessage;
+    return this;
+  }
+
+  public void unsetErrorMessage() {
+    this.errorMessage = null;
+  }
+
+  /** Returns true if field errorMessage is set (has been assigned a value) and false otherwise */
+  public boolean isSetErrorMessage() {
+    return this.errorMessage != null;
+  }
+
+  public void setErrorMessageIsSet(boolean value) {
+    if (!value) {
+      this.errorMessage = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case KEY:
@@ -177,6 +214,14 @@ public class ResourceInUse extends TException implements org.apache.thrift.TBase
       }
       break;
 
+    case ERROR_MESSAGE:
+      if (value == null) {
+        unsetErrorMessage();
+      } else {
+        setErrorMessage((String)value);
+      }
+      break;
+
     }
   }
 
@@ -184,6 +229,9 @@ public class ResourceInUse extends TException implements org.apache.thrift.TBase
     switch (field) {
     case KEY:
       return Integer.valueOf(getKey());
+
+    case ERROR_MESSAGE:
+      return getErrorMessage();
 
     }
     throw new IllegalStateException();
@@ -198,6 +246,8 @@ public class ResourceInUse extends TException implements org.apache.thrift.TBase
     switch (field) {
     case KEY:
       return isSetKey();
+    case ERROR_MESSAGE:
+      return isSetErrorMessage();
     }
     throw new IllegalStateException();
   }
@@ -206,12 +256,12 @@ public class ResourceInUse extends TException implements org.apache.thrift.TBase
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof ResourceInUse)
-      return this.equals((ResourceInUse)that);
+    if (that instanceof KeyNotFound)
+      return this.equals((KeyNotFound)that);
     return false;
   }
 
-  public boolean equals(ResourceInUse that) {
+  public boolean equals(KeyNotFound that) {
     if (that == null)
       return false;
 
@@ -224,6 +274,15 @@ public class ResourceInUse extends TException implements org.apache.thrift.TBase
         return false;
     }
 
+    boolean this_present_errorMessage = true && this.isSetErrorMessage();
+    boolean that_present_errorMessage = true && that.isSetErrorMessage();
+    if (this_present_errorMessage || that_present_errorMessage) {
+      if (!(this_present_errorMessage && that_present_errorMessage))
+        return false;
+      if (!this.errorMessage.equals(that.errorMessage))
+        return false;
+    }
+
     return true;
   }
 
@@ -233,7 +292,7 @@ public class ResourceInUse extends TException implements org.apache.thrift.TBase
   }
 
   @Override
-  public int compareTo(ResourceInUse other) {
+  public int compareTo(KeyNotFound other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
@@ -246,6 +305,16 @@ public class ResourceInUse extends TException implements org.apache.thrift.TBase
     }
     if (isSetKey()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.key, other.key);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetErrorMessage()).compareTo(other.isSetErrorMessage());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetErrorMessage()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.errorMessage, other.errorMessage);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -267,11 +336,19 @@ public class ResourceInUse extends TException implements org.apache.thrift.TBase
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("ResourceInUse(");
+    StringBuilder sb = new StringBuilder("KeyNotFound(");
     boolean first = true;
 
     sb.append("key:");
     sb.append(this.key);
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("errorMessage:");
+    if (this.errorMessage == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.errorMessage);
+    }
     first = false;
     sb.append(")");
     return sb.toString();
@@ -300,15 +377,15 @@ public class ResourceInUse extends TException implements org.apache.thrift.TBase
     }
   }
 
-  private static class ResourceInUseStandardSchemeFactory implements SchemeFactory {
-    public ResourceInUseStandardScheme getScheme() {
-      return new ResourceInUseStandardScheme();
+  private static class KeyNotFoundStandardSchemeFactory implements SchemeFactory {
+    public KeyNotFoundStandardScheme getScheme() {
+      return new KeyNotFoundStandardScheme();
     }
   }
 
-  private static class ResourceInUseStandardScheme extends StandardScheme<ResourceInUse> {
+  private static class KeyNotFoundStandardScheme extends StandardScheme<KeyNotFound> {
 
-    public void read(org.apache.thrift.protocol.TProtocol iprot, ResourceInUse struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol iprot, KeyNotFound struct) throws org.apache.thrift.TException {
       org.apache.thrift.protocol.TField schemeField;
       iprot.readStructBegin();
       while (true)
@@ -326,6 +403,14 @@ public class ResourceInUse extends TException implements org.apache.thrift.TBase
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
+          case 2: // ERROR_MESSAGE
+            if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+              struct.errorMessage = iprot.readString();
+              struct.setErrorMessageIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
         }
@@ -337,47 +422,62 @@ public class ResourceInUse extends TException implements org.apache.thrift.TBase
       struct.validate();
     }
 
-    public void write(org.apache.thrift.protocol.TProtocol oprot, ResourceInUse struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol oprot, KeyNotFound struct) throws org.apache.thrift.TException {
       struct.validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
       oprot.writeFieldBegin(KEY_FIELD_DESC);
       oprot.writeI32(struct.key);
       oprot.writeFieldEnd();
+      if (struct.errorMessage != null) {
+        oprot.writeFieldBegin(ERROR_MESSAGE_FIELD_DESC);
+        oprot.writeString(struct.errorMessage);
+        oprot.writeFieldEnd();
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
 
   }
 
-  private static class ResourceInUseTupleSchemeFactory implements SchemeFactory {
-    public ResourceInUseTupleScheme getScheme() {
-      return new ResourceInUseTupleScheme();
+  private static class KeyNotFoundTupleSchemeFactory implements SchemeFactory {
+    public KeyNotFoundTupleScheme getScheme() {
+      return new KeyNotFoundTupleScheme();
     }
   }
 
-  private static class ResourceInUseTupleScheme extends TupleScheme<ResourceInUse> {
+  private static class KeyNotFoundTupleScheme extends TupleScheme<KeyNotFound> {
 
     @Override
-    public void write(org.apache.thrift.protocol.TProtocol prot, ResourceInUse struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol prot, KeyNotFound struct) throws org.apache.thrift.TException {
       TTupleProtocol oprot = (TTupleProtocol) prot;
       BitSet optionals = new BitSet();
       if (struct.isSetKey()) {
         optionals.set(0);
       }
-      oprot.writeBitSet(optionals, 1);
+      if (struct.isSetErrorMessage()) {
+        optionals.set(1);
+      }
+      oprot.writeBitSet(optionals, 2);
       if (struct.isSetKey()) {
         oprot.writeI32(struct.key);
+      }
+      if (struct.isSetErrorMessage()) {
+        oprot.writeString(struct.errorMessage);
       }
     }
 
     @Override
-    public void read(org.apache.thrift.protocol.TProtocol prot, ResourceInUse struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol prot, KeyNotFound struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(1);
+      BitSet incoming = iprot.readBitSet(2);
       if (incoming.get(0)) {
         struct.key = iprot.readI32();
         struct.setKeyIsSet(true);
+      }
+      if (incoming.get(1)) {
+        struct.errorMessage = iprot.readString();
+        struct.setErrorMessageIsSet(true);
       }
     }
   }

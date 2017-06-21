@@ -4,7 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-package graphservice.exception;
+package graphservice;
 
 import org.apache.thrift.scheme.IScheme;
 import org.apache.thrift.scheme.SchemeFactory;
@@ -32,16 +32,16 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class KeyNotFound extends TException implements org.apache.thrift.TBase<KeyNotFound, KeyNotFound._Fields>, java.io.Serializable, Cloneable, Comparable<KeyNotFound> {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("KeyNotFound");
+public class KeyAlreadyUsed extends TException implements org.apache.thrift.TBase<KeyAlreadyUsed, KeyAlreadyUsed._Fields>, java.io.Serializable, Cloneable, Comparable<KeyAlreadyUsed> {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("KeyAlreadyUsed");
 
   private static final org.apache.thrift.protocol.TField KEY_FIELD_DESC = new org.apache.thrift.protocol.TField("key", org.apache.thrift.protocol.TType.I32, (short)1);
   private static final org.apache.thrift.protocol.TField ERROR_MESSAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("errorMessage", org.apache.thrift.protocol.TType.STRING, (short)2);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
-    schemes.put(StandardScheme.class, new KeyNotFoundStandardSchemeFactory());
-    schemes.put(TupleScheme.class, new KeyNotFoundTupleSchemeFactory());
+    schemes.put(StandardScheme.class, new KeyAlreadyUsedStandardSchemeFactory());
+    schemes.put(TupleScheme.class, new KeyAlreadyUsedTupleSchemeFactory());
   }
 
   public int key; // required
@@ -119,13 +119,13 @@ public class KeyNotFound extends TException implements org.apache.thrift.TBase<K
     tmpMap.put(_Fields.ERROR_MESSAGE, new org.apache.thrift.meta_data.FieldMetaData("errorMessage", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(KeyNotFound.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(KeyAlreadyUsed.class, metaDataMap);
   }
 
-  public KeyNotFound() {
+  public KeyAlreadyUsed() {
   }
 
-  public KeyNotFound(
+  public KeyAlreadyUsed(
     int key,
     String errorMessage)
   {
@@ -138,7 +138,7 @@ public class KeyNotFound extends TException implements org.apache.thrift.TBase<K
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public KeyNotFound(KeyNotFound other) {
+  public KeyAlreadyUsed(KeyAlreadyUsed other) {
     __isset_bitfield = other.__isset_bitfield;
     this.key = other.key;
     if (other.isSetErrorMessage()) {
@@ -146,8 +146,8 @@ public class KeyNotFound extends TException implements org.apache.thrift.TBase<K
     }
   }
 
-  public KeyNotFound deepCopy() {
-    return new KeyNotFound(this);
+  public KeyAlreadyUsed deepCopy() {
+    return new KeyAlreadyUsed(this);
   }
 
   @Override
@@ -161,7 +161,7 @@ public class KeyNotFound extends TException implements org.apache.thrift.TBase<K
     return this.key;
   }
 
-  public KeyNotFound setKey(int key) {
+  public KeyAlreadyUsed setKey(int key) {
     this.key = key;
     setKeyIsSet(true);
     return this;
@@ -184,7 +184,7 @@ public class KeyNotFound extends TException implements org.apache.thrift.TBase<K
     return this.errorMessage;
   }
 
-  public KeyNotFound setErrorMessage(String errorMessage) {
+  public KeyAlreadyUsed setErrorMessage(String errorMessage) {
     this.errorMessage = errorMessage;
     return this;
   }
@@ -256,12 +256,12 @@ public class KeyNotFound extends TException implements org.apache.thrift.TBase<K
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof KeyNotFound)
-      return this.equals((KeyNotFound)that);
+    if (that instanceof KeyAlreadyUsed)
+      return this.equals((KeyAlreadyUsed)that);
     return false;
   }
 
-  public boolean equals(KeyNotFound that) {
+  public boolean equals(KeyAlreadyUsed that) {
     if (that == null)
       return false;
 
@@ -292,7 +292,7 @@ public class KeyNotFound extends TException implements org.apache.thrift.TBase<K
   }
 
   @Override
-  public int compareTo(KeyNotFound other) {
+  public int compareTo(KeyAlreadyUsed other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
@@ -336,7 +336,7 @@ public class KeyNotFound extends TException implements org.apache.thrift.TBase<K
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("KeyNotFound(");
+    StringBuilder sb = new StringBuilder("KeyAlreadyUsed(");
     boolean first = true;
 
     sb.append("key:");
@@ -377,15 +377,15 @@ public class KeyNotFound extends TException implements org.apache.thrift.TBase<K
     }
   }
 
-  private static class KeyNotFoundStandardSchemeFactory implements SchemeFactory {
-    public KeyNotFoundStandardScheme getScheme() {
-      return new KeyNotFoundStandardScheme();
+  private static class KeyAlreadyUsedStandardSchemeFactory implements SchemeFactory {
+    public KeyAlreadyUsedStandardScheme getScheme() {
+      return new KeyAlreadyUsedStandardScheme();
     }
   }
 
-  private static class KeyNotFoundStandardScheme extends StandardScheme<KeyNotFound> {
+  private static class KeyAlreadyUsedStandardScheme extends StandardScheme<KeyAlreadyUsed> {
 
-    public void read(org.apache.thrift.protocol.TProtocol iprot, KeyNotFound struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol iprot, KeyAlreadyUsed struct) throws org.apache.thrift.TException {
       org.apache.thrift.protocol.TField schemeField;
       iprot.readStructBegin();
       while (true)
@@ -422,7 +422,7 @@ public class KeyNotFound extends TException implements org.apache.thrift.TBase<K
       struct.validate();
     }
 
-    public void write(org.apache.thrift.protocol.TProtocol oprot, KeyNotFound struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol oprot, KeyAlreadyUsed struct) throws org.apache.thrift.TException {
       struct.validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
@@ -440,16 +440,16 @@ public class KeyNotFound extends TException implements org.apache.thrift.TBase<K
 
   }
 
-  private static class KeyNotFoundTupleSchemeFactory implements SchemeFactory {
-    public KeyNotFoundTupleScheme getScheme() {
-      return new KeyNotFoundTupleScheme();
+  private static class KeyAlreadyUsedTupleSchemeFactory implements SchemeFactory {
+    public KeyAlreadyUsedTupleScheme getScheme() {
+      return new KeyAlreadyUsedTupleScheme();
     }
   }
 
-  private static class KeyNotFoundTupleScheme extends TupleScheme<KeyNotFound> {
+  private static class KeyAlreadyUsedTupleScheme extends TupleScheme<KeyAlreadyUsed> {
 
     @Override
-    public void write(org.apache.thrift.protocol.TProtocol prot, KeyNotFound struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol prot, KeyAlreadyUsed struct) throws org.apache.thrift.TException {
       TTupleProtocol oprot = (TTupleProtocol) prot;
       BitSet optionals = new BitSet();
       if (struct.isSetKey()) {
@@ -468,7 +468,7 @@ public class KeyNotFound extends TException implements org.apache.thrift.TBase<K
     }
 
     @Override
-    public void read(org.apache.thrift.protocol.TProtocol prot, KeyNotFound struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol prot, KeyAlreadyUsed struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
       BitSet incoming = iprot.readBitSet(2);
       if (incoming.get(0)) {

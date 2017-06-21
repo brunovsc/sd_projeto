@@ -1,13 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package graphservice.run;
+package graphservice;
 
-import graphservice.model.Aresta;
-import graphservice.handler.Graph;
-import graphservice.model.Vertice;
 import static java.lang.System.exit;
 import java.util.List;
 import java.util.Scanner;
@@ -18,10 +10,6 @@ import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.protocol.TBinaryProtocol;
 
-/**
- *
- * @author sd-server
- */
 public class GraphClient {
     
     private static TTransport transport;

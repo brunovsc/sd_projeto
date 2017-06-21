@@ -1,9 +1,5 @@
-package graphservice.handler;
+package graphservice;
 
-import graphservice.exception.KeyNotFound;
-import graphservice.exception.ResourceInUse;
-import graphservice.exception.KeyAlreadyUsed;
-import graphservice.model.*;
 import java.util.ArrayList;
 import org.apache.thrift.TException;
 import java.util.List;

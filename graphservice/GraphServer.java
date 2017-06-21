@@ -1,7 +1,5 @@
-package graphservice.run;
+package graphservice;
 
-import graphservice.handler.Graph;
-import graphservice.handler.ServerHandler;
 import static java.lang.Thread.sleep;
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.transport.TServerSocket;
