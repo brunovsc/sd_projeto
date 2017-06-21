@@ -15,19 +15,22 @@ public class GraphClient {
     private static TTransport transport;
     private static TProtocol protocol;
     private static Graph.Client client;
-    private static int N = 3;
-    private static int firstPort = 9090;
     
     public static void main(String [] args) {
         try {
-            //int port = ThreadLocalRandom.current().nextInt(firstPort, firstPort + N);
-            int port = 9092;
+			int port;
+			try{
+            	port = Integer.parseInt(args[0]);
+			} catch(Exception e){
+				System.out.println("No port specified... finishing client");
+				return;
+			}
             transport = new TSocket("localhost", port);
             transport.open();
 
             protocol = new TBinaryProtocol(transport);
             client = new Graph.Client(protocol);
-            System.out.println("Client connected to port " + port);
+            System.out.print("\nClient connected to port " + port);
         } catch (TException x){
 
             x.printStackTrace();
@@ -63,7 +66,7 @@ public class GraphClient {
     }
 
     public static void showGrafo(List<Vertice> vertices, List<Aresta> arestas) throws TException{
-        System.out.println("\n\n      GRAFO: ");
+        System.out.println("\n      GRAFO: ");
         showVertices(vertices);
         System.out.println("");
         showArestas(arestas);
@@ -91,7 +94,7 @@ public class GraphClient {
     }
 
     public static int showMenu(){
-        System.out.println("\n\n");
+        System.out.println("");
         System.out.println("================================");
         System.out.println("|         1. Vertice           |");
         System.out.println("|         2. Aresta            |");
@@ -103,7 +106,7 @@ public class GraphClient {
         Scanner in = new Scanner(System.in);
         int op1 = in.nextInt();
         int op2 = 0;
-        if(op1 != 0){
+        if(op1 != 0 && op1 < 5){
             op2 = showSubMenu(op1);
         }
         return op1 * 10 + op2;
@@ -160,16 +163,13 @@ public class GraphClient {
             case 11:
                 System.out.print("Nome: ");
                 nome = in.nextInt();
-                cor = nome;
-                peso = nome;
-                descricao = "1";/*
                 System.out.print("Cor: ");
                 cor = in.nextInt();
                 System.out.print("Peso: ");
                 peso = in.nextDouble();
                 System.out.print("Descricao: ");
                 in.nextLine();
-                descricao = in.nextLine();*/
+                descricao = in.nextLine();
 
                 if(client.createVertice(nome, cor, peso, descricao)){
                     System.out.println("Vertice criado com sucesso");

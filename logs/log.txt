@@ -1,0 +1,8 @@
+Initializing 3 servers
+Running java GraphServer 3 0 9090
+Running java GraphServer 3 1 9090
+Running java GraphServer 3 2 9090
+==== Opened ports: 
+----- 9090
+----- 9091
+----- 9092
