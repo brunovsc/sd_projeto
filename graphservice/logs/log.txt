@@ -1,2 +1,0 @@
-Running java GraphServer 2 0 9093
-Running java GraphServer 2 1 9093
