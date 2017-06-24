@@ -301,9 +301,9 @@ public class GraphClient {
                 }
                 break;
             case 34:
-                System.out.println("Vertice 1: ");
+                System.out.print("Vertice 1: ");
                 vertice1 = in.nextInt();
-                System.out.println("Vertice 2: ");
+                System.out.print("Vertice 2: ");
                 vertice2 = in.nextInt();
                 
                 List<Vertice> caminho = client.menorCaminho(vertice1, vertice2);
@@ -312,10 +312,12 @@ public class GraphClient {
                     for(Vertice vert: caminho){
                         System.out.print(" " + vert.nome);
                     }
+                    System.out.println("");
                 }
                 else{
                     System.out.println("Caminho não encontrado");
                 }
+                break;
             case 41:
                 vertices = client.listVertices();
                 showVertices(vertices);
