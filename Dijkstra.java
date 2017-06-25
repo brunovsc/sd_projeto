@@ -36,7 +36,7 @@ public class Dijkstra{
         
         while (verticesNaoMarcados.size() > 0) {
             
-        	Vertice nodo = getMinimo(verticesNaoMarcados);
+            Vertice nodo = getMinimo(verticesNaoMarcados);
             verticesMarcados.add(nodo);
             verticesNaoMarcados.remove(nodo);
             buscaDistanciasMinimas(nodo);
@@ -64,11 +64,21 @@ public class Dijkstra{
     private double getDistancia(Vertice nodo, Vertice alvo) {
         
     	for (Aresta aresta: arestas) {
-    		
-            if (aresta.getVertice1() == nodo.getNome()
+    	 
+  	    //direcionada
+            if (aresta.isDirecionado() == true && aresta.getVertice1() == nodo.getNome()
                     && aresta.getVertice2() == alvo.getNome()) {
                 return aresta.getPeso();
             }
+	    else { //não direcionada
+
+	   	if((aresta.getVertice1() == nodo.getNome()
+                    && aresta.getVertice2() == alvo.getNome()) || 
+			(aresta.getVertice2() == nodo.getNome()
+        	            && aresta.getVertice1() == alvo.getNome()))	
+		   return aresta.getPeso();
+
+	    }
         }
         throw new RuntimeException("Nao deveria acontecer");
     }
@@ -76,15 +86,27 @@ public class Dijkstra{
     private List<Vertice> getVizinhos(Vertice nodo) {
     	
         List<Vertice> vizinhos = new ArrayList<Vertice>();
-        
+        //aqui tbmmm
         for (Aresta aresta: arestas) {
             
-        	if (aresta.getVertice1() == nodo.getNome()
-                    && !verificaMarcado(findVertice(aresta.getVertice2()))) {
-                vizinhos.add(findVertice(aresta.getVertice2()));
-            }
-        	
-        }
+	    if (aresta.isDirecionado() == true && aresta.getVertice1() == nodo.getNome()
+            	&& !verificaMarcado(findVertice(aresta.getVertice2()))) {
+        	vizinhos.add(findVertice(aresta.getVertice2()));
+     	    }
+	    else {
+
+	    	if(aresta.getVertice1() == nodo.getNome()
+            	    && !verificaMarcado(findVertice(aresta.getVertice2()))) { 
+
+		    vizinhos.add(findVertice(aresta.getVertice2()));
+	    	}
+	    	if(aresta.getVertice2() == nodo.getNome()
+            	    && !verificaMarcado(findVertice(aresta.getVertice1()))) { 
+
+		    vizinhos.add(findVertice(aresta.getVertice1()));
+	    	}
+	    }   
+	}    	
         return vizinhos;
     }
 
@@ -94,8 +116,8 @@ public class Dijkstra{
         
     	for (Vertice v : vertices) {
             
-    		if (minimo == null) {
-                minimo = v;
+	    if (minimo == null) {
+            	minimo = v;
             } else {
                 if (getMenorDistancia(v) < getMenorDistancia(minimo)) {
                     minimo = v;
@@ -127,7 +149,7 @@ public class Dijkstra{
      * Esse método retorna o caminho do vertice inicial até o destino e
      * NULL caso não exista caminho
      */
-    public LinkedList<Vertice> getCaminho(Vertice alvo) {
+    public LinkedList<Vertice> getCaminho(Vertice alvo) { 
         
     	LinkedList<Vertice> caminho = new LinkedList<Vertice>();
         Vertice atual = alvo;

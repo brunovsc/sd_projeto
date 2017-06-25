@@ -359,10 +359,16 @@ public class ServerHandler implements Graph.Iface{
             unblockAresta(vertice1, vertice2);
             throw new KeyNotFound(vertice1, "Vertice nao encontrado");
         }
-        if(findVertice(grafo, vertice2) == null){ 
-            unblockAresta(vertice1, vertice2);
-            throw new KeyNotFound(vertice2, "Vertice nao encontrado");
+	Vertice v2 = null;
+	try{
+		v2 = readVertice(vertice2);
+        } catch(TException e){
+            System.out.println("Failed to request vertice2");
         }
+	if(v2 == null){ 
+    		unblockAresta(vertice1, vertice2);
+    		throw new KeyNotFound(vertice2, "Vertice nao encontrado");
+	}
         
         Aresta aresta = findAresta(grafo, vertice1, vertice2);
         
@@ -600,7 +606,7 @@ public class ServerHandler implements Graph.Iface{
 
         Dijkstra algoritmo = new Dijkstra(fullGraph);
 
-        algoritmo.executa(v);
+        algoritmo.executa(v); 
 
         LinkedList<Vertice> caminho = algoritmo.getCaminho(destino);
         return caminho;
