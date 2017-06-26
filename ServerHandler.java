@@ -35,7 +35,7 @@ public class ServerHandler implements Graph.Iface{
     public ServerHandler(String []args){
         
         grafo.vertices = new ArrayList<>();
-        grafo.arestas = new ArrayList<>();
+        grafo.arestas = new ArrayList<>(); 
         
         N = Integer.parseInt(args[0]);
         selfId = Integer.parseInt(args[1]);
@@ -234,7 +234,7 @@ public class ServerHandler implements Graph.Iface{
     }
     
     public Aresta findAresta(Grafo grafo, int vertice1, int vertice2){
-        for(Aresta a: grafo.arestas){
+        for(Aresta a : grafo.arestas){
             if((a.vertice1 == vertice1 && a.vertice2 == vertice2) || (a.vertice1 == vertice2 && a.vertice2 == vertice1)){
                return a;
             }
@@ -288,11 +288,26 @@ public class ServerHandler implements Graph.Iface{
             throw new KeyNotFound(key, "Vertice nao encontrado");
         }
         
-        for(Aresta a: grafo.arestas){ // Restriction: remoção de vértice implica na remoção de suas arestas
-            if(a.vertice1 == key || a.vertice2 == key){
-                grafo.arestas.remove(a);
+	 
+	 for(Aresta a : grafo.arestas) { //TA DANDO ERRO AQUI
+            if(a.vertice1 == vertice.nome || a.vertice2 == vertice.nome){
+		//this.deleteAresta(a.vertice1, a.vertice2);                
+		grafo.arestas.remove(a);
             }
         }
+
+	for(int i = 0; i<N; i++) {
+            boolean p =  false;
+		if(i != selfId)
+		{
+	    		logForwardedRequest(i);
+			p = clients[i].deleteArestaFromVertice(vertice.nome);
+			if(p == true){
+				System.out.println("Deleting arestas from " + ports[i]);
+			}
+		}
+	}
+
         grafo.vertices.remove(vertice);
         unblockVertice(key);
         return true;
@@ -626,4 +641,33 @@ public class ServerHandler implements Graph.Iface{
         }
         return g;
     }
+
+    @Override
+    public boolean deleteArestaFromVertice(int key) throws KeyNotFound, ResourceInUse, TException {
+        //int server = processRequest(key);
+        //if(server != selfId){
+        //    logForwardedRequest(server);
+        //    boolean p = clients[server].deleteArestaFromVertice(key);
+        //    return p;
+        //}
+        //verifyResourceVertice(key);
+        
+        //logForOperation(2);
+        
+        //Vertice vertice = findVertice(grafo, key);
+        //if(vertice == null){
+        //    unblockVertice(key);
+        //    throw new KeyNotFound(key, "Vertice nao encontrado");
+        //}
+        
+        for(Aresta a : grafo.arestas){ 
+            if(a.vertice1 == key || a.vertice2 == key){
+		//this.deleteAresta(a.vertice1, a.vertice2);                  
+		grafo.arestas.remove(a);
+            }
+        }
+
+        return true;
+    }
+
 }

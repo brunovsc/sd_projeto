@@ -9,3 +9,36 @@ Server 9090 connected to server 9092
 
 ##### Finished creating connections to other servers #####
 
+----- OPERATION on port 9090 - List Vertices
+Requesting vertices from 9091
+Received 1
+Requesting vertices from 9092
+Received 1
+!! Request forwarded from server 9090 to server 9091
+Received 2
+----- OPERATION on port 9090 - Create Vertice
+!! Request forwarded from server 9090 to server 9091
+Received 3
+!! Request forwarded from server 9090 to server 9092
+Received 2
+----- OPERATION on port 9090 - List Vertices
+Requesting vertices from 9091
+Received 4
+Requesting vertices from 9092
+Received 3
+----- OPERATION on port 9090 - List Self Vertices
+----- OPERATION on port 9090 - List Vertices
+Requesting vertices from 9091
+Received 5
+Requesting vertices from 9092
+Received 4
+----- OPERATION on port 9090 - List Vertices
+Requesting vertices from 9091
+Received 6
+Requesting vertices from 9092
+Received 5
+----- OPERATION on port 9090 - List Arestas
+Requesting arestas from 9091
+Received 7
+Requesting arestas from 9092
+Received 6

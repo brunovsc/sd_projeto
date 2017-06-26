@@ -9,3 +9,9 @@ Server 9092 connected to server 9091
 
 ##### Finished creating connections to other servers #####
 
+----- OPERATION on port 9092 - List Self Vertices
+----- OPERATION on port 9092 - Create Vertice
+----- OPERATION on port 9092 - List Self Vertices
+----- OPERATION on port 9092 - List Self Vertices
+----- OPERATION on port 9092 - List Self Vertices
+----- OPERATION on port 9092 - List Self Arestas
