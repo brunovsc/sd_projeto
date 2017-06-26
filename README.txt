@@ -14,6 +14,7 @@ This file contains instructions to build and run the project.
 3. Create N servers:
 	./create_servers.sh N
 	* N is the number of servers to initialize
+	* run command from /scripts folder
 	
 4. Run GraphClient:
 	java -cp .:./jars/libthrift-0.10.0.jar:./jars/slf4j.jar:./jars/slf4j-simple-1.7.25.jar graphservice.GraphClient port 
@@ -21,6 +22,7 @@ This file contains instructions to build and run the project.
 
 5. Kill all server processes:
 	./kill_servers.sh
+	* run command from /scripts folder
 
 --- Auxiliary commands:
 

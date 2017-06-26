@@ -163,65 +163,53 @@ public class ServerHandler implements Graph.Iface{
     }
     
     public void logForOperation(int operation){
-        System.out.print("----- OPERATION on port " + selfPort + " - ");
-        switch(operation){
-            case 0:
-                break;
-            case 1:
-                System.out.println("Create Vertice");
-                break;
-            case 2:
-                System.out.println("Delete Vertice");
-                break;
-            case 3:
-                System.out.println("Update Vertice");
-                break;
-            case 4:
-                System.out.println("Read Vertice");
-                break;
-            case 5:
-                System.out.println("Create Aresta");
-                break;
-            case 6:
-                System.out.println("Delete Aresta");
-                break;
-            case 7:
-                System.out.println("Update Aresta");
-                break;
-            case 8:
-                System.out.println("Read Aresta");
-                break;
-            case 9:
-                System.out.println("List Vertices Aresta");
-                break;
-            case 10:
-                System.out.println("List Arestas Vertice");
-                break;
-            case 11:
-                System.out.println("List Neighbors");
-                break;
-            case 12:
-                System.out.println("List Vertices");
-                break;
-            case 13:
-                System.out.println("List Arestas");
-                break;
-            case 14:
-                System.out.println("List Self Vertices");
-                break;
-            case 15:
-                System.out.println("List Self Arestas");
-                break;
-            case 16:
-                System.out.println("Menor Caminho");
-                break;
-            default:
-                break;
-        }
+        System.out.println("----- OPERATION on port " + selfPort + " - " + textForOperation(operation));
+        
     }    
     
-    public void logForwardedRequest(int server){
-        System.out.println("!! Request forwarded from server " + selfPort + " to server " + ports[server]);
+    public void logForwardedRequest(int server, int operation){
+        System.out.println("----- Request " + textForOperation(operation) + " FORWARDED from server " + selfPort + " to server " + ports[server]);
+    }
+    
+    public String textForOperation(int operation){
+        switch(operation){
+            case 0:
+                return "";
+            case 1:
+                return "Create Vertice";
+            case 2:
+                return "Delete Vertice";
+            case 3:
+                return "Update Vertice";
+            case 4:
+                return "Read Vertice";
+            case 5:
+                return "Create Aresta";
+            case 6:
+                return "Delete Aresta";
+            case 7:
+                return "Update Aresta";
+            case 8:
+                return "Read Aresta";
+            case 9:
+                return "List Vertices Aresta";
+            case 10:
+                return "List Arestas Vertice";
+            case 11:
+                return "List Neighbors";
+            case 12:
+                return "List Vertices";
+            case 13:
+                return "List Arestas";
+            case 14:
+                return "List Self Vertices";
+            case 15:
+                return "List Self Arestas";
+            case 16:
+                return "Menor Caminho";
+            default:
+                return "Invalid operation";
+        }
     }
     
     public Vertice findVertice(Grafo grafo, int vertice){
@@ -246,7 +234,7 @@ public class ServerHandler implements Graph.Iface{
     public boolean createVertice(int nome, int cor, double peso, String descricao) throws KeyAlreadyUsed, ResourceInUse, TException {
         int server = processRequest(nome);
         if(server != selfId){
-            logForwardedRequest(server);
+            logForwardedRequest(server, 1);
             try{
                 boolean p = clients[server].createVertice(nome, cor, peso, descricao);
                 return p;
@@ -274,7 +262,7 @@ public class ServerHandler implements Graph.Iface{
     public boolean deleteVertice(int key) throws KeyNotFound, ResourceInUse, TException {
         int server = processRequest(key);
         if(server != selfId){
-            logForwardedRequest(server);
+            logForwardedRequest(server, 2);
             boolean p = clients[server].deleteVertice(key);
             return p;
         }
@@ -289,24 +277,21 @@ public class ServerHandler implements Graph.Iface{
         }
         
 	 
-	 for(Aresta a : grafo.arestas) { //TA DANDO ERRO AQUI
-            if(a.vertice1 == vertice.nome || a.vertice2 == vertice.nome){
-		//this.deleteAresta(a.vertice1, a.vertice2);                
-		grafo.arestas.remove(a);
+        for(Aresta a : grafo.arestas) { // Remover arestas da forma (key, v2)
+            if(a.vertice1 == vertice.nome){
+                grafo.arestas.remove(a);
             }
         }
 
-	for(int i = 0; i<N; i++) {
+        for(int i = 0; i < N; i++) { // Remover arestas (v2, key) sao removidas nos demais servidores
             boolean p =  false;
-		if(i != selfId)
-		{
-	    		logForwardedRequest(i);
-			p = clients[i].deleteArestaFromVertice(vertice.nome);
-			if(p == true){
-				System.out.println("Deleting arestas from " + ports[i]);
-			}
-		}
-	}
+            if(i != selfId){
+                p = clients[i].deleteArestaFromVertice(key);
+                if(p){
+                    System.out.println("Deleted arestas from " + ports[i]);
+                }
+            }
+        }
 
         grafo.vertices.remove(vertice);
         unblockVertice(key);
@@ -317,7 +302,7 @@ public class ServerHandler implements Graph.Iface{
     public Vertice readVertice(int key) throws KeyNotFound, ResourceInUse, TException {
         int server = processRequest(key);
         if(server != selfId){
-            logForwardedRequest(server);
+            logForwardedRequest(server, 4);
             Vertice p = clients[server].readVertice(key);
             return p;
         }
@@ -338,7 +323,7 @@ public class ServerHandler implements Graph.Iface{
     public boolean updateVertice(int nome, int cor, double peso, String descricao) throws KeyNotFound, ResourceInUse, TException {
         int server = processRequest(nome);
         if(server != selfId){
-            logForwardedRequest(server);
+            logForwardedRequest(server, 3);
             boolean p = clients[server].updateVertice(nome, cor, peso, descricao);
             return p;
         }
@@ -362,7 +347,7 @@ public class ServerHandler implements Graph.Iface{
     public boolean createAresta(int vertice1, int vertice2, double peso, boolean direcionado, String descricao) throws KeyAlreadyUsed, ResourceInUse, TException {
         int server = processRequest(vertice1);
         if(server != selfId){
-            logForwardedRequest(server);
+            logForwardedRequest(server, 5);
             boolean p = clients[server].createAresta(vertice1, vertice2, peso, direcionado, descricao);
             return p;
         }
@@ -374,16 +359,14 @@ public class ServerHandler implements Graph.Iface{
             unblockAresta(vertice1, vertice2);
             throw new KeyNotFound(vertice1, "Vertice nao encontrado");
         }
-	Vertice v2 = null;
-	try{
-		v2 = readVertice(vertice2);
+        
+        Vertice v2 = null;
+        try{
+            v2 = readVertice(vertice2);
         } catch(TException e){
-            System.out.println("Failed to request vertice2");
+            unblockAresta(vertice1, vertice2);
+            throw e;
         }
-	if(v2 == null){ 
-    		unblockAresta(vertice1, vertice2);
-    		throw new KeyNotFound(vertice2, "Vertice nao encontrado");
-	}
         
         Aresta aresta = findAresta(grafo, vertice1, vertice2);
         
@@ -394,17 +377,14 @@ public class ServerHandler implements Graph.Iface{
         }
         // Aresta já existe, tratar bidirecionalidade
         if(!aresta.direcionado){ // aresta já é bidirecional
-        System.out.println("PRINT 2");
             unblockAresta(vertice1, vertice2);
             throw new KeyAlreadyUsed(0, "Aresta ja existente");
         }
-        if(aresta.vertice1 == vertice1 && aresta.vertice2 == vertice2){ // direcionada de v1 pra v2 ja existe
-        System.out.println("PRINT 3");
+        if(aresta.vertice1 == vertice1 && aresta.vertice2 == vertice2){ // direcionada de v1 pra v2 ja exist
             unblockAresta(vertice1, vertice2);
             throw new KeyAlreadyUsed(0, "Aresta direcionada ja existente do vertice 1 para o vertice 2");            
         }
         else{ // direcionada de v2 pra v1
-        System.out.println("PRINT 4");
             unblockAresta(vertice1, vertice2);
             throw new KeyAlreadyUsed(0, "Aresta direcionada ja existente do vertice 2 para o vertice 1");     
         }
@@ -414,7 +394,7 @@ public class ServerHandler implements Graph.Iface{
     public boolean deleteAresta(int vertice1, int vertice2) throws KeyNotFound, ResourceInUse, TException {
         int server = processRequest(vertice1);
         if(server != selfId){
-            logForwardedRequest(server);
+            logForwardedRequest(server, 6);
             boolean p = clients[server].deleteAresta(vertice1, vertice2);
             return p;
         }
@@ -435,7 +415,7 @@ public class ServerHandler implements Graph.Iface{
     public Aresta readAresta(int vertice1, int vertice2) throws KeyNotFound, ResourceInUse, TException {
         int server = processRequest(vertice1);
         if(server != selfId){
-            logForwardedRequest(server);
+            logForwardedRequest(server, 8);
             Aresta p = clients[server].readAresta(vertice1, vertice2);
             return p;
         }
@@ -455,7 +435,7 @@ public class ServerHandler implements Graph.Iface{
     public boolean updateAresta(int vertice1, int vertice2, double peso, boolean direcionado, String descricao) throws KeyNotFound, ResourceInUse, TException {
         int server = processRequest(vertice1);
         if(server != selfId){
-            logForwardedRequest(server);
+            logForwardedRequest(server, 7);
             boolean p = clients[server].updateAresta(vertice1, vertice2, peso, direcionado, descricao);
             return p;
         }
@@ -644,30 +624,11 @@ public class ServerHandler implements Graph.Iface{
 
     @Override
     public boolean deleteArestaFromVertice(int key) throws KeyNotFound, ResourceInUse, TException {
-        //int server = processRequest(key);
-        //if(server != selfId){
-        //    logForwardedRequest(server);
-        //    boolean p = clients[server].deleteArestaFromVertice(key);
-        //    return p;
-        //}
-        //verifyResourceVertice(key);
-        
-        //logForOperation(2);
-        
-        //Vertice vertice = findVertice(grafo, key);
-        //if(vertice == null){
-        //    unblockVertice(key);
-        //    throw new KeyNotFound(key, "Vertice nao encontrado");
-        //}
-        
-        for(Aresta a : grafo.arestas){ 
-            if(a.vertice1 == key || a.vertice2 == key){
-		//this.deleteAresta(a.vertice1, a.vertice2);                  
-		grafo.arestas.remove(a);
+        for(Aresta a: grafo.arestas){
+            if(a.vertice2 == key){
+                grafo.arestas.remove(a);
             }
         }
-
         return true;
     }
-
 }
