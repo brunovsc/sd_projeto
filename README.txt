@@ -1,5 +1,11 @@
-===================== README.txt ===========================
+=========================== README.txt ===========================
 
+By:
+11311BCC009 - Bruno Sergio Cardoso Vieira
+11321BCC003 - Karen Catigua Junqueira
+11411BCC018 - Matheus Prado Prandini Faria
+
+==================================================================
 This file contains instructions to build and run the project.
 	* scripts must be executed from scripts/ folder
 
