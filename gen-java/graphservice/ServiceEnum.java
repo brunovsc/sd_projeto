@@ -24,7 +24,8 @@ public enum ServiceEnum implements org.apache.thrift.TEnum {
   LIST_ARESTAS_VERTICE(9),
   LIST_NEIGHBORS(10),
   LIST_VERTICES(11),
-  LIST_ARESTAS(12);
+  LIST_ARESTAS(12),
+  MENOR_CAMINHO(13);
 
   private final int value;
 
@@ -71,6 +72,8 @@ public enum ServiceEnum implements org.apache.thrift.TEnum {
         return LIST_VERTICES;
       case 12:
         return LIST_ARESTAS;
+      case 13:
+        return MENOR_CAMINHO;
       default:
         return null;
     }

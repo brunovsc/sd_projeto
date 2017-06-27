@@ -36,6 +36,43 @@ public class GraphClient {
             x.printStackTrace();
         }
         if(client != null){
+
+
+	try{
+		int test = Integer.parseInt(args[1]);
+		try{
+			client.createVertice(1, 1, 1.0, "1");
+			client.createVertice(2, 2, 2.0, "2");
+			client.createVertice(3, 3, 3.0, "3");
+			client.createVertice(4, 4, 4.0, "4");
+			client.createVertice(5, 5, 5.0, "5");
+			client.createVertice(6, 6, 6.0, "6");
+			client.createVertice(7, 7, 7.0, "7");
+			client.createVertice(8, 8, 8.0, "8");
+			client.createVertice(9, 9, 9.0, "9");
+
+			client.createAresta(1, 2, 12, false, "12");
+			client.createAresta(1, 3, 13, false, "13");
+			client.createAresta(2, 3, 23, false, "23");
+			client.createAresta(2, 5, 25, false, "25");
+			client.createAresta(2, 6, 26, false, "26");
+			client.createAresta(2, 9, 29, false, "29");
+			client.createAresta(4, 1, 41, false, "41");
+			client.createAresta(4, 3, 43, false, "43");
+			client.createAresta(4, 8, 48, false, "48");
+			client.createAresta(5, 1, 51, false, "51");
+			client.createAresta(5, 7, 57, false, "57");
+			client.createAresta(6, 4, 64, false, "64");
+			client.createAresta(6, 5, 65, false, "65");
+			client.createAresta(7, 8, 78, false, "78");
+			client.createAresta(8, 3, 83, false, "83");
+			client.createAresta(8, 9, 89, false, "89");
+			client.createAresta(9, 1, 91, false, "91");
+		}
+		catch(Exception e){ System.out.println(e.toString()); }
+	}catch(Exception e){}
+
+
             int op = -1;
             while(op != 0){
                 op = showMenu();

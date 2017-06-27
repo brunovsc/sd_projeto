@@ -9,9 +9,39 @@ Server 9092 connected to server 9091
 
 ##### Finished creating connections to other servers #####
 
------ OPERATION on port 9092 - List Self Vertices
 ----- OPERATION on port 9092 - Create Vertice
+----- OPERATION on port 9092 - Create Vertice
+----- OPERATION on port 9092 - Create Vertice
+----- OPERATION on port 9092 - Read Vertice
+----- FORWARDED request (Read Vertice)  from server 9092 to server 9091
+Received 1
+----- OPERATION on port 9092 - Create Aresta
+----- FORWARDED request (Read Vertice)  from server 9092 to server 9091
+Received 2
+----- OPERATION on port 9092 - Create Aresta
+----- OPERATION on port 9092 - Read Vertice
+----- OPERATION on port 9092 - Create Aresta
+----- OPERATION on port 9092 - Read Vertice
+----- OPERATION on port 9092 - Read Vertice
+----- FORWARDED request (Read Vertice)  from server 9092 to server 9091
+Received 3
+----- OPERATION on port 9092 - Create Aresta
+----- OPERATION on port 9092 - Read Vertice
+----- OPERATION on port 9092 - Create Aresta
+----- FORWARDED request (Read Vertice)  from server 9092 to server 9091
+Received 4
+----- OPERATION on port 9092 - Create Aresta
+----- OPERATION on port 9092 - List Vertices
+Requesting vertices from 9090
+Received 1
+Requesting vertices from 9091
+Received 5
+----- OPERATION on port 9092 - List Arestas
+Requesting arestas from 9090
+Received 2
+Requesting arestas from 9091
+Received 6
 ----- OPERATION on port 9092 - List Self Vertices
------ OPERATION on port 9092 - List Self Vertices
+----- OPERATION on port 9092 - List Self Arestas
 ----- OPERATION on port 9092 - List Self Vertices
 ----- OPERATION on port 9092 - List Self Arestas
